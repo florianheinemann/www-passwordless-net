@@ -1,0 +1,10 @@
+extends layout
+
+block content
+	h1= title
+	p Welcome to #{title}
+
+	form(action='/account/sendtoken', method='POST')
+		p Email:
+		input(name='user', type='email' placeholder='email@example.com')
+		input(type='submit', value='Login or Register')
