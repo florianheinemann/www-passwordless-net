@@ -4,6 +4,7 @@ var passwordless = require('passwordless');
 var MongoStore = require('passwordless-mongostore');
 var config = require('../config');
 var sendgrid  = require('sendgrid')(config.sendgrid.api_user, config.sendgrid.api_key);
+var User = require('../models/user');
 
 module.exports = function(app) {
 
@@ -35,7 +36,13 @@ module.exports = function(app) {
 
 	// For every request: provide user data to the view
 	app.use(function(req, res, next) {
-		res.locals.user = req.user;
-		next();
+		if(req.user) {
+			User.findById(req.user, function(error, user) {
+				res.locals.user = user;
+				next();
+			});
+		} else {
+			next();
+		}
 	})
 }

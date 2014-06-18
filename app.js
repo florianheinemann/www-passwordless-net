@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongostore')(session);
+var expressValidator = require('express-validator');
+var flash = require('connect-flash');
 
 var config = require('./config');
 var passwordless = require('./controller/passwordless');
@@ -24,6 +26,9 @@ app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
+app.use(expressValidator());
+expressValidator.validator.extend('toLowerCase', function (str) { return str.toLowerCase(); });
+
 app.use(cookieParser(config.http.cookie_secret));
 app.use(session({   secret: config.http.cookie_secret,
                     cookie: {maxAge: 60*60*24*365*10},
@@ -32,6 +37,7 @@ app.use(session({   secret: config.http.cookie_secret,
                                             port: config.mongodb.port,
                                             username: config.mongodb.user, 
                                             password: config.mongodb.password })}));
+app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 
 passwordless(app);

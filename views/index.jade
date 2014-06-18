@@ -1,10 +1,14 @@
 extends layout
 
 block content
-	h1= title
-	p Welcome to #{title}
-
+	h1 Passwordless
+	if error
+		p= error
 	form(action='/account/sendtoken', method='POST')
-		p Email:
-		input(name='user', type='email' placeholder='email@example.com')
+		label(for='email') Email
+		if validation && validation.user
+			label(for='email') #{validation.user.msg}
+		input(id='email', name='user', type='email', placeholder='email@example.com', 
+			maxlength=200, minlength=1,
+			value='#{ (validation && validation.user && validation.user.value) || "" }')
 		input(type='submit', value='Login or Register')
