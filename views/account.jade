@@ -6,20 +6,21 @@ block content
 
 	form(action='/users/edit', method='POST')
 		if error
-			p= error
+			div.alert-box.alert(data-alert)= error
+				a.close(href='#') &times;
 		label(for='email') Email
 		if validation && validation.user
-			label(for='email') #{validation.user.msg}
+			label.error(for='email') #{validation.user.msg}
 		input(id='email', name='user', type='email', placeholder='email@example.com', 
 			maxlength=200, minlength=1,
 			value='#{ (validation && validation.user && validation.user.value) || user.email }')
 		label(for='username') Username
 		if validation && validation.username
-			label(for='username') #{validation.username.msg}
+			label.error(for='username') #{validation.username.msg}
 		input(id='username', name='username', type='text', placeholder='Username', maxlength=200, 
 			value='#{ (validation && validation.username && validation.username.value) || user.username }')
 		if validation && validation.color
-			label(for='color') #{validation.color.msg}
+			label.error(for='color') #{validation.color.msg}
 		input(id='color', name='color', type='text', placeholder='Color', maxlength=200,
 			value='#{ (validation && validation.color && validation.color.value) || user.color }')
 		input(type='submit', value='Save')

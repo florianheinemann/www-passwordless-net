@@ -1,0 +1,10 @@
+#hero {
+	max-width: none;
+}
+
+code, pre {
+	font-size: 1.125rem;
+	text-rendering: optimizelegibility;
+	line-height: 1.6;
+	margin-bottom: 1.25rem;
+}

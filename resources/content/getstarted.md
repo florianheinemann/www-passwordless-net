@@ -1,4 +1,4 @@
-## Getting you started
+## Getting started
 
 ### 1. Install the module:
 

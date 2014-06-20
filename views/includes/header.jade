@@ -1,23 +1,30 @@
 span
-	if !homepage
-		a(href='/')
-			h1.headerH1 Passwordless
-	nav
-		ul
-			li
-				a(href='/getstarted') Getting started
-			li
-				a(href='/deepdive') Deep dive
-			li
-				a(href='/api') API
-			li
-				a(href='/about') About
-	div
-		if user
-			a(href='/users/edit')
-				img(src='https://www.gravatar.com/avatar/#{user.md5}?s=50&d=retro')
-				p #{user.username || user.email} 
-			a(href='/account/logout') Logout
-	div
-		p
-			a(href='https://github.com/florianheinemann/passwordless') GitHub
+	nav.top-bar(data-topbar)
+		ul.title-area
+			li.name
+				h1
+					a(href='/') Passwordless
+			li.toggle-topbar.menu-icon
+				a(href='#')
+					span Menu
+		section.top-bar-section
+			ul.left
+				li
+					a(href='/getstarted') Getting started
+				li
+					a(href='/deepdive') Deep dive
+				li
+					a(href='/api') API
+				li
+					a(href='https://github.com/florianheinemann/passwordless') GitHub
+				li
+					a(href='/about') About
+			if user
+				ul.right
+					li
+						a(href='/users/edit')
+							img(src='https://www.gravatar.com/avatar/#{user.md5}?s=45&d=retro')
+					li
+						a(href='/users/edit') #{user.username || user.email} 
+					li
+						a(href='/account/logout') Logout
