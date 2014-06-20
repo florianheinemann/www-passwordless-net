@@ -7,13 +7,20 @@ block content
 				header
 					h1.text-center Passwordless
 					h3.subheader.text-center Token-based authentication middleware for Express &amp; Node.js 
+					p Passwords are broken. Inspired by 
+						a(href='http://twitter.com/ninjudd') Justin Balthrop's 
+						| article 
+						cite 
+							a(href='https://medium.com/@ninjudd/passwords-are-obsolete-9ed56d483eb') Passwords are Obsolete
+						|  Passwordless delivers an alternative that is faster for you as a developer, 
+						| better for your users, and more secure.
 				section
 					if error
 						div.alert-box.alert(data-alert)= error
 							a.close(href='#') &times;
 					if !user
 						form(action='/account/sendtoken', method='POST')
-							p Curious how it works? Test our demo!
+							h3 Curious how it works? Give it a spin!
 							p We will only use your email to send out the token. Still don't want to give your personal email? Simply use a  
 								a(href='http://mailinator.com/') disposable address
 							label(for='email') Email
@@ -23,14 +30,6 @@ block content
 								maxlength=200, minlength=1,
 								value='#{ (validation && validation.user && validation.user.value) || "" }')
 							input.button.small(type='submit', value='Login or Register')
-
-					p Passwords are broken. Inspired by 
-						a(href='http://twitter.com/ninjudd') Justin Balthrop's 
-						| article 
-						cite 
-							a(href='https://medium.com/@ninjudd/passwords-are-obsolete-9ed56d483eb') Passwords are Obsolete
-						|  Passwordless delivers an alternative that is faster for you as a developer, 
-						| better for your users, and more secure.
 	section.row
 		div.large-8.large-centered.columns
 			include content/index.html
