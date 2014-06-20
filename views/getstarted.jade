@@ -3,19 +3,6 @@ extends layout
 block content
 	section
 		header
-			h1 Passwordless
-			p Express middleware for authentciation through one-time tokens via email, text, ... 
-		section
-			if error
-				p= error
-			form(action='/account/sendtoken', method='POST')
-				p Curious how it works? Test our demo!
-				p We will only use your email to send out the token. Still don't want to give your personal email? Simply use a  
-					a(href='http://mailinator.com/') disposable address
-				label(for='email') Email
-				if validation && validation.user
-					label(for='email') #{validation.user.msg}
-				input(id='email', name='user', type='email', placeholder='email@example.com', 
-					maxlength=200, minlength=1,
-					value='#{ (validation && validation.user && validation.user.value) || "" }')
-				input(type='submit', value='Login or Register')
+			h2 Getting started
+		aritcle
+			p Passwordless is a node.js module for [express](http://expressjs.com/) that allows *authentication* and *authorization* without passwords but simply by sending tokens via email or other means. It utilizes a very similar mechanism as many sites use for resetting passwords. The module was inspired by Justin Balthrop's aritcle "[Passwords are Obsolete](https://medium.com/@ninjudd/passwords-are-obsolete-9ed56d483eb)"
