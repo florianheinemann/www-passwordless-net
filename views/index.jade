@@ -4,20 +4,24 @@ block content
 	section.panel
 		div.row
 			section.large-8.large-centered.columns
+				if error
+					div.alert-box.alert(data-alert)= error
+						a.close(href='#') &times;
+				if success
+					div.alert-box.success(data-alert)= success
+						a.close(href='#') &times;
 				header
-					h1.text-center Passwordless
+					h1.text-center.first Passwordless
 					h3.subheader.text-center Token-based authentication middleware for Express &amp; Node.js 
+					p
+						code $ npm install passwordless --save
 					p Passwords are broken. Inspired by 
 						a(href='http://twitter.com/ninjudd') Justin Balthrop's 
 						| article 
 						cite 
 							a(href='https://medium.com/@ninjudd/passwords-are-obsolete-9ed56d483eb') Passwords are Obsolete
-						|  Passwordless delivers an alternative that is faster for you as a developer, 
-						| better for your users, and more secure.
+						|  Passwordless is faster to deploy, better for your users, and more secure.
 				section
-					if error
-						div.alert-box.alert(data-alert)= error
-							a.close(href='#') &times;
 					if !user
 						form(action='/account/sendtoken', method='POST')
 							h3 Curious how it works? Give it a spin!

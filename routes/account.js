@@ -46,8 +46,9 @@ router.post('/sendtoken',
 					})
 				}
 			})
-		}),
+		}, { failureRedirect: '/', failureFlash: 'We had issues sending out this email... Could you try it at a later moment?' }),
 	function(req, res) {
+		req.flash('success', 'You should have an email in your inbox any minute now...!');
   		res.redirect('/');
 });
 

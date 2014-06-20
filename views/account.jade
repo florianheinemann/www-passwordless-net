@@ -3,11 +3,11 @@ extends layout
 block content
 	h2 Your account
 	p Here you can edit your account
+	if error
+		div.alert-box.alert(data-alert)= error
+			a.close(href='#') &times;
 
 	form(action='/users/edit', method='POST')
-		if error
-			div.alert-box.alert(data-alert)= error
-				a.close(href='#') &times;
 		label(for='email') Email
 		if validation && validation.user
 			label.error(for='email') #{validation.user.msg}

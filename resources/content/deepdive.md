@@ -1,5 +1,3 @@
-## Deep dive
-
 ### Logout
 Just call `passwordless.logout()` as in:
 ```javascript

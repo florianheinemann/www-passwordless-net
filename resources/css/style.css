@@ -8,3 +8,9 @@ code, pre {
 	line-height: 1.6;
 	margin-bottom: 1.25rem;
 }
+
+@media only screen and (min-width: 64.063em) {
+	h1.first, h2.first, h3.first {
+		padding-top: 6rem;
+	}
+}

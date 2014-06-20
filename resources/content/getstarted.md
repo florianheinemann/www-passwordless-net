@@ -1,5 +1,3 @@
-## Getting started
-
 ### 1. Install the module:
 
 `$ npm install passwordless --save`
