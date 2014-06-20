@@ -1,0 +1,151 @@
+<h2 id="getting-you-started">Getting you started</h2>
+<h3 id="1-install-the-module-">1. Install the module:</h3>
+<p><code>$ npm install passwordless --save</code></p>
+<p>Usually you also want to install a TokenStore such as <a href="https://github.com/florianheinemann/passwordless-mongostore">MongoStore</a> and something to deliver the tokens.</p>
+<p><code>$ npm install passwordless-mongostore --save</code></p>
+<p><code>$ npm install emailjs --save</code></p>
+<h3 id="2-require-the-needed-modules">2. Require the needed modules</h3>
+<p>You will need:</p>
+<ul>
+<li>Passwordless</li>
+<li>A TokenStore to store the tokens such as <a href="https://github.com/florianheinemann/passwordless-mongostore">MongoStore</a></li>
+<li>Something to deliver the tokens such as <a href="https://github.com/eleith/emailjs">emailjs</a> for email or <a href="https://www.twilio.com/docs/node/install">twilio</a> for text messages / SMS</li>
+</ul>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> passwordless = <span class="hljs-built_in">require</span>(<span class="hljs-string">'passwordless'</span>);
+<span class="hljs-keyword">var</span> MongoStore = <span class="hljs-built_in">require</span>(<span class="hljs-string">'passwordless-mongostore'</span>);
+<span class="hljs-keyword">var</span> email   = <span class="hljs-built_in">require</span>(<span class="hljs-string">"emailjs"</span>);
+</code></pre>
+<h3 id="3-setup-your-delivery">3. Setup your delivery</h3>
+<p>Depending on how you want to deliver your tokens, this could look like this for emailjs:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> smtpServer  = email.server.connect({
+   user:    yourEmail, 
+   password: yourPwd, 
+   host:    yourSmtp, 
+   ssl:     <span class="hljs-keyword">true</span>
+});
+</code></pre>
+<h3 id="4-initialize-passwordless">4. Initialize Passwordless</h3>
+<p><code>passwordless.init()</code> will take your TokenStore, which will store the generated tokens.</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Your MongoDB TokenStore</span>
+<span class="hljs-keyword">var</span> pathToMongoDb = <span class="hljs-string">'mongodb://localhost/passwordless-simple-mail'</span>;
+passwordless.init(<span class="hljs-keyword">new</span> MongoStore(pathToMongoDb));
+</code></pre>
+<h3 id="5-tell-passwordless-how-to-deliver-a-token">5. Tell Passwordless how to deliver a token</h3>
+<p><code>passwordless.addDelivery(deliver)</code> adds a new delivery mechanism. <code>deliver</code> is called whenever a token has to be sent. By default, you should provide the user with a link in the following format:</p>
+<p><code>http://www.example.com/token=TOKEN&amp;uid=UID</code></p>
+<p>That&#39;s how you could do this with emailjs:</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Set up a delivery service</span>
+passwordless.addDelivery(
+  <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> {</span>
+    <span class="hljs-keyword">var</span> host = <span class="hljs-string">'localhost:3000'</span>
+    smtpServer.send({
+     text:    <span class="hljs-string">'Hello!\nAccess your account here: http://'</span> 
+          + host + <span class="hljs-string">'?token='</span> + tokenToSend + <span class="hljs-string">'&amp;uid='</span> + <span class="hljs-built_in">encodeURIComponent</span>(uidToSend), 
+     from:    yourEmail, 
+     to:      recipient,
+     subject: <span class="hljs-string">'Token for '</span> + host
+   }, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, message)</span> {</span> 
+        <span class="hljs-keyword">if</span>(err) {
+            console.log(err);
+        }
+        callback(err);
+    });
+});
+</code></pre>
+<h3 id="6-setup-the-middleware-for-express">6. Setup the middleware for express</h3>
+<pre><code class="lang-javascript">app<span class="hljs-preprocessor">.use</span>(passwordless<span class="hljs-preprocessor">.sessionSupport</span>())<span class="hljs-comment">;</span>
+app<span class="hljs-preprocessor">.use</span>(passwordless<span class="hljs-preprocessor">.acceptToken</span>())<span class="hljs-comment">;</span>
+</code></pre>
+<p><code>sessionSupport()</code> makes the user login persistent, so the user will stay logged in. It has to come after your session middleware. Have a look at <a href="https://github.com/expressjs/session">express-session</a> how to setup sessions if you are unsure.</p>
+<p><code>acceptToken()</code> will accept any incoming requests for tokens (see the URL in step 5). If you like, you could also restrict that to certain URLs.</p>
+<h3 id="7-the-router">7. The router</h3>
+<p>The following takes for granted that you&#39;ve already setup your router <code>var router = express.Router();</code> as explained in the <a href="http://expressjs.com/4x/api.html#router">express docs</a></p>
+<p>You will need at least URLs to:</p>
+<ul>
+<li>Display a page asking for people&#39;s email (or other medium)</li>
+<li>Receive the details (via POST) and identify the user</li>
+</ul>
+<p>For example like this:</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">/* GET login screen. */</span>
+router.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/login'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> {</span>
+   res.render(<span class="hljs-string">'login'</span>);
+});
+
+<span class="hljs-comment">/* POST login details. */</span>
+router.post(<span class="hljs-string">'/sendtoken'</span>, 
+    passwordless.requestToken(
+        <span class="hljs-comment">// Turn the email address into an user ID</span>
+        <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(user, delivery, callback)</span> {</span>
+            <span class="hljs-comment">// usually you would want something like:</span>
+            User.find({email: user}, callback(ret) {
+               <span class="hljs-keyword">if</span>(ret)
+                  callback(<span class="hljs-literal">null</span>, ret.id)
+               <span class="hljs-keyword">else</span>
+                  callback(<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>)
+          })
+          <span class="hljs-comment">// but you could also do the following if you want to allow anyone:</span>
+          callback(<span class="hljs-literal">null</span>, user);
+        }),
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> {</span>
+       <span class="hljs-comment">// success!</span>
+          res.render(<span class="hljs-string">'sent'</span>);
+});
+</code></pre>
+<p>What happens here? <code>passwordless.requestToken(getUserId)</code> has two tasks: Making sure the email address exists <em>and</em> transforming it into a proper user ID that will become the identifier from now on. For example user@example.com becomes 123 or &#39;u1002&#39;. You call <code>callback(null, ID)</code> if all is good, <code>callback(null, null)</code> if you don&#39;t know this email address, and <code>callback(&#39;error&#39;, null)</code> if something went wrong.</p>
+<p>Most likely, you want a user registration page where you take an email address and any other user details and generate an ID. However, you can also simply accept any email address by skipping the lookup and just calling <code>callback(null, user)</code>.</p>
+<p>If you have just a fixed list of users do the following:</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// GET login as above</span>
+
+<span class="hljs-keyword">var</span> users = [
+    { id: <span class="hljs-number">1</span>, email: <span class="hljs-string">'marc@example.com'</span> },
+    { id: <span class="hljs-number">2</span>, email: <span class="hljs-string">'alice@example.com'</span> }
+];
+
+<span class="hljs-comment">/* POST login details. */</span>
+router.post(<span class="hljs-string">'/sendtoken'</span>, 
+    passwordless.requestToken(
+        <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(user, delivery, callback)</span> {</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = users.length - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+                <span class="hljs-keyword">if</span>(users[i].email === user.toLowerCase()) {
+                <span class="hljs-keyword">return</span> callback(<span class="hljs-literal">null</span>, users[i].id);
+                }
+            }
+            callback(<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>);
+        }),
+        <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> {</span>
+            <span class="hljs-comment">// success!</span>
+        res.render(<span class="hljs-string">'sent'</span>);
+});
+</code></pre>
+<h3 id="8-login-page">8. Login page</h3>
+<p>All you need is a form where users enter their email address, for example:</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">h1</span>&gt;</span>Login<span class="hljs-tag">&lt;/<span class="hljs-title">h1</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">form</span> <span class="hljs-attribute">action</span>=<span class="hljs-value">"/sendtoken"</span> <span class="hljs-attribute">method</span>=<span class="hljs-value">"POST"</span>&gt;</span>
+            Email:
+            <span class="hljs-tag">&lt;<span class="hljs-title">br</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"user"</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">br</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"submit"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"Login"</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">form</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span>
+</code></pre>
+<p>By default, Passwordless will look for a field called <code>user</code> submitted via POST.</p>
+<h3 id="9-protect-your-pages">9. Protect your pages</h3>
+<p>You can protect all pages that should only be accessed by authenticated users by using the <code>passwordless.restricted()</code> middleware, for example:</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">/* GET restricted site. */</span>
+router.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/restricted'</span>, passwordless.restricted(),
+ <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> {</span>
+  <span class="hljs-comment">// render the secret page</span>
+});
+</code></pre>
+<p>You can also protect a full path, by doing:</p>
+<pre><code class="lang-javascript">router.<span class="hljs-keyword">use</span>(<span class="hljs-string">'/admin'</span>, passwordless.restricted());
+</code></pre>
+<h3 id="10-who-is-logged-in-">10. Who is logged in?</h3>
+<p>Passwordless stores the user ID in req.user (at least by default). So, if you want to display the user&#39;s details or use them for further requests, you can do something such as:</p>
+<pre><code class="lang-javascript">router.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/admin'</span>, passwordless.restricted(),
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> {</span>
+        res.render(<span class="hljs-string">'admin'</span>, { user: req.user });
+});
+</code></pre>
