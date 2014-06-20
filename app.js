@@ -8,6 +8,7 @@ var session = require('express-session');
 var MongoStore = require('connect-mongostore')(session);
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
+var enforce = require('express-sslify');
 
 var config = require('./config');
 var passwordless = require('./controller/passwordless');
@@ -21,6 +22,8 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+app.use(enforce.HTTPS(true));
 
 app.use(favicon());
 app.use(logger('dev'));
