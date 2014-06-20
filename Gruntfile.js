@@ -8,9 +8,6 @@ module.exports = function(grunt) {
 			options : {
 			 //Shared Options Hash
 			},
-			test : {
-				src : '.test.env',
-			},
 			dev : {
 				src : '.dev.env',
 			}
