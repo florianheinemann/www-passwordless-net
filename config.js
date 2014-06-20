@@ -6,7 +6,8 @@ config.http = {};
 config.sendgrid = {};
 
 config.mongodb.host = process.env.MONGODB_HOST || '127.0.0.1';
-config.mongodb.port = process.env.MONGODB_PORT || 27017;
+// TODO: Remove comment when dokku-mongodb-plugin is fixed
+config.mongodb.port = /*process.env.MONGODB_PORT ||*/ 27017;
 config.mongodb.user = process.env.MONGODB_USERNAME || '';
 config.mongodb.password = process.env.MONGODB_PASSWORD || '';
 config.mongodb.database = process.env.MONGODB_DATABASE || 'wwwpasswordlessnet';
