@@ -23,7 +23,9 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(enforce.HTTPS(true));
+if(config.http.enforce_ssl) {
+    app.use(enforce.HTTPS(config.http.trust_proxy));
+}
 
 app.use(favicon());
 app.use(logger('dev'));
