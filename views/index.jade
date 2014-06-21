@@ -20,20 +20,13 @@ block content
 						| article 
 						cite 
 							a(href='https://medium.com/@ninjudd/passwords-are-obsolete-9ed56d483eb') Passwords are Obsolete
-						|  Passwordless is faster to deploy, better for your users, and more secure.
-				section
+						|  token-based authentication is faster to deploy, better for your users, and more secure.
 					if !user
-						form(action='/account/sendtoken', method='POST')
-							h3 Curious how it works? Give it a spin!
-							p We will only use your email to send out the token. Still don't want to give your personal email? Simply use a  
-								a(href='http://mailinator.com/') disposable address
-							label(for='email') Email
-							if validation && validation.user
-								label.error(for='email') #{validation.user.msg}
-							input(id='email', name='user', type='email', placeholder='email@example.com', 
-								maxlength=200, minlength=1,
-								value='#{ (validation && validation.user && validation.user.value) || "" }')
-							input.button.small(type='submit', value='Login or Register')
+						p.text-center
+							a.button.small(href='/account/login') Give it a try!
+					else
+						p.text-center
+							a.button.small(href='/account/logout') Logout &amp; try again!
 	section.row
 		div.large-8.large-centered.columns
 			include content/index.html

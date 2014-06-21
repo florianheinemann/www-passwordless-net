@@ -7,11 +7,13 @@
 </code></pre>
 <h3 id="redirects">Redirects</h3>
 <p>Redirect non-authorized users who try to access protected resources with <code>failureRedirect</code> (default is a 401 error page):</p>
-<pre><code class="lang-javascript">router.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/restricted'</span>, passwordless.restricted({ failureRedirect: <span class="hljs-string">'/login'</span> });
+<pre><code class="lang-javascript">router.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/restricted'</span>, 
+    passwordless.restricted({ failureRedirect: <span class="hljs-string">'/login'</span> });
 </code></pre>
 <p>Redirect unsuccessful login attempts with <code>failureRedirect</code> (default is a 401 or 400 error page):</p>
-<pre><code class="lang-javascript">router.post(<span class="hljs-string">'/login'</span>, passwordless.requestToken(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(user, delivery, callback)</span> {</span>
-    <span class="hljs-comment">// identify user</span>
+<pre><code class="lang-javascript">router.post(<span class="hljs-string">'/login'</span>, 
+    passwordless.requestToken(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(user, delivery, callback)</span> {</span>
+        <span class="hljs-comment">// identify user</span>
 }, { failureRedirect: <span class="hljs-string">'/login'</span> }),
     <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span>{</span>
         <span class="hljs-comment">// success</span>
@@ -20,8 +22,9 @@
 <h3 id="error-flashes">Error flashes</h3>
 <p>Flashes are error messages that are pushed to the user e.g. after a redirect to display more details about an issue e.g. an unsuccessful login attempt. You need flash middleware such as <a href="https://www.npmjs.org/package/connect-flash">connect-flash</a>.</p>
 <p>You can use them in any situation where you can use <code>failureRedirect</code> (see above). However, they can never be used without <code>failureRedirect</code>. As an example:</p>
-<pre><code class="lang-javascript">router.post(<span class="hljs-string">'/login'</span>, passwordless.requestToken(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(user, delivery, callback)</span> {</span>
-    <span class="hljs-comment">// identify user</span>
+<pre><code class="lang-javascript">router.post(<span class="hljs-string">'/login'</span>, 
+    passwordless.requestToken(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(user, delivery, callback)</span> {</span>
+        <span class="hljs-comment">// identify user</span>
 }, { failureRedirect: <span class="hljs-string">'/login'</span>, failureFlash: <span class="hljs-string">'This user is unknown!'</span> }),
     <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span>{</span>
         <span class="hljs-comment">// success</span>
@@ -70,7 +73,8 @@ router.post(<span class="hljs-string">'/sendtoken'</span>, passwordless.requestT
 <p>Passwordless supports the redirect of users to the login page, remembering the original URL, and then redirecting them again to the originally requested page when the token has been submitted. Due to the many steps involved, several modifications have to be undertaken:</p>
 <p><strong>1: Set <code>originField</code> and <code>failureRedirect</code> for passwordless.restricted()</strong></p>
 <p>Doing this will call <code>/login</code> with <code>/login?origin=/admin</code> to allow later reuse</p>
-<pre><code class="lang-javascript">router.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/admin'</span>, passwordless.restricted( { originField: <span class="hljs-string">'origin'</span>, failureRedirect: <span class="hljs-string">'/login'</span> }));
+<pre><code class="lang-javascript">router.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/admin'</span>, passwordless.restricted( 
+    { originField: <span class="hljs-string">'origin'</span>, failureRedirect: <span class="hljs-string">'/login'</span> }));
 </code></pre>
 <p><strong>2: Display <code>origin</code> as hidden field on the login page</strong></p>
 <p>Be sure to pass <code>origin</code> to the page renderer.</p>
@@ -94,11 +98,13 @@ router.post(<span class="hljs-string">'/sendtoken'</span>, passwordless.requestT
 </code></pre>
 <h3 id="several-delivery-strategies">Several delivery strategies</h3>
 <p>In case you want to use several ways to send out tokens you have to add several delivery strategies as shown below:</p>
-<pre><code class="lang-javascript">passwordless.addDelivery(<span class="hljs-string">'email'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> {</span>
-    <span class="hljs-comment">// send the token to recipient</span>
+<pre><code class="lang-javascript">passwordless.addDelivery(<span class="hljs-string">'email'</span>, 
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> {</span>
+        <span class="hljs-comment">// send the token to recipient</span>
 });
-passwordless.addDelivery(<span class="hljs-string">'sms'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> {</span>
-    <span class="hljs-comment">// send the token to recipient</span>
+passwordless.addDelivery(<span class="hljs-string">'sms'</span>, 
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> {</span>
+        <span class="hljs-comment">// send the token to recipient</span>
 });
 </code></pre>
 <p>To simplify your code, provide the field <code>delivery</code> to your HTML page which submits the recipient details. Afterwards, <code>requestToken()</code> will allow you to distinguish between the different methods:</p>
@@ -116,14 +122,16 @@ passwordless.addDelivery(<span class="hljs-string">'sms'</span>, <span class="hl
 </code></pre>
 <h3 id="modify-lifetime-of-a-token">Modify lifetime of a token</h3>
 <pre><code class="lang-javascript"><span class="hljs-comment">// Lifetime in ms for the specific delivert strategy</span>
-passwordless.addDelivery(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> {</span>
-    <span class="hljs-comment">// send the token to recipient</span>
+passwordless.addDelivery(
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> {</span>
+        <span class="hljs-comment">// send the token to recipient</span>
 }, { ttl: <span class="hljs-number">1000</span>*<span class="hljs-number">60</span>*<span class="hljs-number">10</span> });
 </code></pre>
 <h3 id="different-tokens">Different tokens</h3>
 <p>Different token generators can be provided by:</p>
-<pre><code class="lang-javascript">passwordless.addDelivery(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> {</span>
-    <span class="hljs-comment">// send the token to recipient</span>
+<pre><code class="lang-javascript">passwordless.addDelivery(
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> {</span>
+        <span class="hljs-comment">// send the token to recipient</span>
 }, {tokenAlgorithm: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span><span class="hljs-keyword">return</span> <span class="hljs-string">'random'</span>}});
 </code></pre>
 <h3 id="stateless-operation">Stateless operation</h3>

@@ -35,20 +35,21 @@ passwordless.init(<span class="hljs-keyword">new</span> MongoStore(pathToMongoDb
 <p>That&#39;s how you could do this with emailjs:</p>
 <pre><code class="lang-javascript"><span class="hljs-comment">// Set up a delivery service</span>
 passwordless.addDelivery(
-  <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> {</span>
-    <span class="hljs-keyword">var</span> host = <span class="hljs-string">'localhost:3000'</span>
-    smtpServer.send({
-     text:    <span class="hljs-string">'Hello!\nAccess your account here: http://'</span> 
-          + host + <span class="hljs-string">'?token='</span> + tokenToSend + <span class="hljs-string">'&amp;uid='</span> + <span class="hljs-built_in">encodeURIComponent</span>(uidToSend), 
-     from:    yourEmail, 
-     to:      recipient,
-     subject: <span class="hljs-string">'Token for '</span> + host
-   }, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, message)</span> {</span> 
-        <span class="hljs-keyword">if</span>(err) {
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> {</span>
+        <span class="hljs-keyword">var</span> host = <span class="hljs-string">'localhost:3000'</span>;
+        smtpServer.send({
+            text:    <span class="hljs-string">'Hello!\nAccess your account here: http://'</span> 
+            + host + <span class="hljs-string">'?token='</span> + tokenToSend + <span class="hljs-string">'&amp;uid='</span> 
+            + <span class="hljs-built_in">encodeURIComponent</span>(uidToSend), 
+            from:    yourEmail, 
+            to:      recipient,
+            subject: <span class="hljs-string">'Token for '</span> + host
+        }, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, message)</span> {</span> 
+            <span class="hljs-keyword">if</span>(err) {
             console.log(err);
-        }
-        callback(err);
-    });
+            }
+            callback(err);
+        });
 });
 </code></pre>
 <h3 id="6-setup-the-middleware-for-express">6. Setup the middleware for express</h3>
@@ -82,8 +83,9 @@ router.post(<span class="hljs-string">'/sendtoken'</span>,
                <span class="hljs-keyword">else</span>
                   callback(<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>)
           })
-          <span class="hljs-comment">// but you could also do the following if you want to allow anyone:</span>
-          callback(<span class="hljs-literal">null</span>, user);
+          <span class="hljs-comment">// but you could also do the following </span>
+          <span class="hljs-comment">// if you want to allow anyone:</span>
+          <span class="hljs-comment">// callback(null, user);</span>
         }),
     <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> {</span>
        <span class="hljs-comment">// success!</span>

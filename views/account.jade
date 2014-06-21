@@ -1,26 +1,39 @@
 extends layout
 
 block content
-	h2 Your account
-	p Here you can edit your account
-	if error
-		div.alert-box.alert(data-alert)= error
-			a.close(href='#') &times;
+	section.row
+		section.large-8.large-centered.columns
+			h2.first Your account
+			p Here you can edit your account. Does it make much sense? No. Does it demonstrate how 
+				| your account page could work with Passwordless? Hopefully!
+			if error
+				div.alert-box.alert(data-alert)= error
+					a.close(href='#') &times;
 
-	form(action='/users/edit', method='POST')
-		label(for='email') Email
-		if validation && validation.user
-			label.error(for='email') #{validation.user.msg}
-		input(id='email', name='user', type='email', placeholder='email@example.com', 
-			maxlength=200, minlength=1,
-			value='#{ (validation && validation.user && validation.user.value) || user.email }')
-		label(for='username') Username
-		if validation && validation.username
-			label.error(for='username') #{validation.username.msg}
-		input(id='username', name='username', type='text', placeholder='Username', maxlength=200, 
-			value='#{ (validation && validation.username && validation.username.value) || user.username }')
-		if validation && validation.color
-			label.error(for='color') #{validation.color.msg}
-		input(id='color', name='color', type='text', placeholder='Color', maxlength=200,
-			value='#{ (validation && validation.color && validation.color.value) || user.color }')
-		input(type='submit', value='Save')
+			form(action='/users/edit', method='POST')
+				label(for='email') Email
+				if validation && validation.user
+					label.error(for='email') #{validation.user.msg}
+				input(id='email', name='user', type='email', placeholder='email@example.com', 
+					maxlength=200, minlength=1,
+					value='#{ (validation && validation.user && validation.user.value) || user.email }')
+				label(for='username') Username
+				if validation && validation.username
+					label.error(for='username') #{validation.username.msg}
+				input(id='username', name='username', type='text', placeholder='Username', maxlength=200, 
+					value='#{ (validation && validation.username && validation.username.value) || user.username }')
+				label(for='color') Avatar
+				if validation && validation.color
+					label.error(for='color') #{validation.color.msg}
+				select(id='color', name='color')
+					- color = (validation && validation.color && validation.color.value=='') || user.color
+					if !color
+						- color = 'Gravatar'
+					- items = [ 'Gravatar', 'Mystery man', 'Identicon', 'Monster', 'Wavatar', 'Retro', 'None']
+					for item in items
+						option(selected=color == item) #{item}
+				div.row
+					div.large-6.column
+						input.button.small(type='submit', value='Save')
+					div.large-6.column
+						a.button.small.alert(href='/users/delete') Delete your account

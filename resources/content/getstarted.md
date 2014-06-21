@@ -48,20 +48,21 @@ That's how you could do this with emailjs:
 ```javascript
 // Set up a delivery service
 passwordless.addDelivery(
-  function(tokenToSend, uidToSend, recipient, callback) {
-    var host = 'localhost:3000'
-    smtpServer.send({
-     text:    'Hello!\nAccess your account here: http://' 
-          + host + '?token=' + tokenToSend + '&uid=' + encodeURIComponent(uidToSend), 
-     from:    yourEmail, 
-     to:      recipient,
-     subject: 'Token for ' + host
-   }, function(err, message) { 
-        if(err) {
-            console.log(err);
-        }
-        callback(err);
-    });
+	function(tokenToSend, uidToSend, recipient, callback) {
+		var host = 'localhost:3000';
+		smtpServer.send({
+			text:    'Hello!\nAccess your account here: http://' 
+			+ host + '?token=' + tokenToSend + '&uid=' 
+			+ encodeURIComponent(uidToSend), 
+			from:    yourEmail, 
+			to:      recipient,
+			subject: 'Token for ' + host
+		}, function(err, message) { 
+			if(err) {
+			console.log(err);
+			}
+			callback(err);
+		});
 });
 ```
 
@@ -101,8 +102,9 @@ router.post('/sendtoken',
 			   else
 			      callback(null, null)
 	      })
-	      // but you could also do the following if you want to allow anyone:
-	      callback(null, user);
+	      // but you could also do the following 
+	      // if you want to allow anyone:
+	      // callback(null, user);
 		}),
 	function(req, res) {
 	   // success!

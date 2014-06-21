@@ -19,10 +19,10 @@ module.exports = function(app) {
 				to:       recipient,
 				from:     config.sendgrid.from,
 				subject:  config.sendgrid.subject,
-				// TODO: Replace with proper template
-				text:    'Hello!\nAccess your account here: '
+				text:    'Hello!\n\nYou have successfully set up your Passwordless acount and you can now access ' +
+					'it by clicking on the following link: \n\n'
 					+ config.http.host_url + '?token=' + encodeURIComponent(tokenToSend) 
-					+ '&uid=' + encodeURIComponent(uidToSend)
+					+ '&uid=' + encodeURIComponent(uidToSend) + '  \n\nSee you soon!'
 			}, function(err, json) {
 				if (err) { 
 					console.error(err);

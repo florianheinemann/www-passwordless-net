@@ -1,0 +1,22 @@
+extends layout
+
+block content
+	section.row
+		section.large-8.large-centered.columns
+			h2.first Demo: Registration and login
+			if !user
+				form(action='/account/sendtoken', method='POST')
+					p Give it a spin and log into this site without any password. Feel free to use a  
+						a(href='http://mailinator.com/', target='_blank') disposable email
+						|  address if you like:
+					label(for='email') Email
+					if validation && validation.user
+						label.error(for='email') #{validation.user.msg}
+					input(id='email', name='user', type='email', placeholder='email@example.com', 
+						maxlength=200, minlength=1,
+						value='#{ (validation && validation.user && validation.user.value) || "" }')
+					input.button.small(type='submit', value='Login or Register')
+			else
+				p You are already logged in. Nothing else to do here. But you could 
+					a(href='/account/logout') logout
+					|  and try it again!

@@ -11,6 +11,12 @@ router.get('/logout', passwordless.logout( {successFlash: 'Hope to see you soon!
   res.redirect('/');
 });
 
+/* GET login. */
+router.get('/login', function(req, res) {
+	res.render('login', { validation: req.flash('validation')[0], 
+		error: req.flash('passwordless')[0], success: req.flash('passwordless-success')[0] });
+});
+
 /* POST login screen. */
 router.post('/sendtoken', 
 	// Input validation
@@ -22,7 +28,7 @@ router.post('/sendtoken',
 		var errors = req.validationErrors(true);
 		if (errors) {
 			req.flash('validation', errors);
-			res.redirect('/');
+			res.redirect('/account/login');
 		} else {
 			next();
 		}

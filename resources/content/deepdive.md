@@ -10,13 +10,15 @@ router.get('/logout', passwordless.logout(),
 ### Redirects
 Redirect non-authorized users who try to access protected resources with `failureRedirect` (default is a 401 error page):
 ```javascript
-router.get('/restricted', passwordless.restricted({ failureRedirect: '/login' });
+router.get('/restricted', 
+	passwordless.restricted({ failureRedirect: '/login' });
 ```
 
 Redirect unsuccessful login attempts with `failureRedirect` (default is a 401 or 400 error page):
 ```javascript
-router.post('/login', passwordless.requestToken(function(user, delivery, callback) {
-	// identify user
+router.post('/login', 
+	passwordless.requestToken(function(user, delivery, callback) {
+		// identify user
 }, { failureRedirect: '/login' }),
 	function(req, res){
 		// success
@@ -28,8 +30,9 @@ Flashes are error messages that are pushed to the user e.g. after a redirect to 
 
 You can use them in any situation where you can use `failureRedirect` (see above). However, they can never be used without `failureRedirect`. As an example:
 ```javascript
-router.post('/login', passwordless.requestToken(function(user, delivery, callback) {
-	// identify user
+router.post('/login', 
+	passwordless.requestToken(function(user, delivery, callback) {
+		// identify user
 }, { failureRedirect: '/login', failureFlash: 'This user is unknown!' }),
 	function(req, res){
 		// success
@@ -95,7 +98,8 @@ Passwordless supports the redirect of users to the login page, remembering the o
 
 Doing this will call `/login` with `/login?origin=/admin` to allow later reuse
 ```javascript
-router.get('/admin', passwordless.restricted( { originField: 'origin', failureRedirect: '/login' }));
+router.get('/admin', passwordless.restricted( 
+	{ originField: 'origin', failureRedirect: '/login' }));
 ```
 
 **2: Display `origin` as hidden field on the login page**
@@ -130,11 +134,13 @@ app.use(passwordless.acceptToken( { enableOriginRedirect: true } ));
 ### Several delivery strategies
 In case you want to use several ways to send out tokens you have to add several delivery strategies as shown below:
 ```javascript
-passwordless.addDelivery('email', function(tokenToSend, uidToSend, recipient, callback) {
-	// send the token to recipient
+passwordless.addDelivery('email', 
+	function(tokenToSend, uidToSend, recipient, callback) {
+		// send the token to recipient
 });
-passwordless.addDelivery('sms', function(tokenToSend, uidToSend, recipient, callback) {
-	// send the token to recipient
+passwordless.addDelivery('sms', 
+	function(tokenToSend, uidToSend, recipient, callback) {
+		// send the token to recipient
 });
 ```
 To simplify your code, provide the field `delivery` to your HTML page which submits the recipient details. Afterwards, `requestToken()` will allow you to distinguish between the different methods:
@@ -155,15 +161,17 @@ router.post('/sendtoken',
 ### Modify lifetime of a token
 ```javascript
 // Lifetime in ms for the specific delivert strategy
-passwordless.addDelivery(function(tokenToSend, uidToSend, recipient, callback) {
-	// send the token to recipient
+passwordless.addDelivery(
+	function(tokenToSend, uidToSend, recipient, callback) {
+		// send the token to recipient
 }, { ttl: 1000*60*10 });
 ```
 ### Different tokens
 Different token generators can be provided by:
 ```javascript
-passwordless.addDelivery(function(tokenToSend, uidToSend, recipient, callback) {
-	// send the token to recipient
+passwordless.addDelivery(
+	function(tokenToSend, uidToSend, recipient, callback) {
+		// send the token to recipient
 }, {tokenAlgorithm: function() {return 'random'}});
 ```
 

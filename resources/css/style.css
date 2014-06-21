@@ -13,4 +13,8 @@ code, pre {
 	h1.first, h2.first, h3.first {
 		padding-top: 6rem;
 	}
+
+	aside.first {
+		padding-top: 6rem;
+	}
 }

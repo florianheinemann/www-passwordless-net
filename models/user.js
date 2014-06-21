@@ -16,6 +16,16 @@ userSchema.statics.findUser = function(email, done) {
 	this.findOne({ email: email }, done);
 };
 
+userSchema.statics.deleteUser = function(email, callback) {
+	if(!email || !callback)
+		return callback('An email address has to be provided');
+
+	email = email.toLowerCase().trim();
+	this.remove({email: email}, function(err) {
+		callback(err);
+	})
+}
+
 userSchema.statics.createOrUpdateUser = function(email, username, color, newEmail, callback) {
 	if(newEmail && !callback) {
 		callback = newEmail;
@@ -42,6 +52,17 @@ userSchema.statics.createOrUpdateUser = function(email, username, color, newEmai
 
 userSchema.virtual('md5').get(function () {
 	return crypto.createHash('md5').update(this.email).digest("hex");
+});
+
+userSchema.virtual('gravatar').get(function () {
+	var items = { 'Gravatar': '', 'Mystery man': 'mm', 
+				'Identicon': 'identicon', 'Monster': 'monsterid', 
+				'Wavatar' : 'wavatar', 'Retro' : 'retro', 'None': 'blank' };
+	if(this.color.length && items[this.color] && items[this.color].length) {
+		return 'https://www.gravatar.com/avatar/' + this.md5 + '?f=y&d=' + items[this.color];
+	} else {
+		return 'https://www.gravatar.com/avatar/' + this.md5 + '?&d=retro';
+	}
 });
 
 var User = db.model('Users', userSchema);
