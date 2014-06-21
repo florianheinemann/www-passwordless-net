@@ -1,12 +1,16 @@
+The following should give a quick-start in using Passwordless. If you need more details check out the [example](https://github.com/florianheinemann/passwordless/tree/master/examples/simple-mail), the [deep dive](https://passwordless.net/deepdive), or the [documentation](https://passwordless.net/docs/Passwordless.html). Also, don't hesitate to raise comments and questions on [GitHub](https://github.com/florianheinemann/passwordless/issues).
+
 ### 1. Install the module:
 
 `$ npm install passwordless --save`
 
-Usually you also want to install a TokenStore such as [MongoStore](https://github.com/florianheinemann/passwordless-mongostore) and something to deliver the tokens.
+Usually you also want to install a TokenStore such as [MongoStore](https://github.com/florianheinemann/passwordless-mongostore) and something to deliver the tokens (be it email, SMS or any other means). For example:
 
 `$ npm install passwordless-mongostore --save`
 
 `$ npm install emailjs --save`
+
+If you need to store your tokens differently consider [developing a new TokenStore](https://github.com/florianheinemann/passwordless-tokenstore-test) and let [us know](https://twitter.com/thesumofall).
 
 ### 2. Require the needed modules
 You will need:
@@ -21,7 +25,7 @@ var email   = require("emailjs");
 ```
 
 ### 3. Setup your delivery
-Depending on how you want to deliver your tokens, this could look like this for emailjs:
+This is very much depending on what you use to deliver your tokens, but if you use emailjs this could like this:
 ```javascript
 var smtpServer  = email.server.connect({
    user:    yourEmail, 
@@ -40,9 +44,9 @@ passwordless.init(new MongoStore(pathToMongoDb));
 ```
 
 ### 5. Tell Passwordless how to deliver a token
-`passwordless.addDelivery(deliver)` adds a new delivery mechanism. `deliver` is called whenever a token has to be sent. By default, you should provide the user with a link in the following format:
+`passwordless.addDelivery(deliver)` adds a new delivery mechanism. `deliver` is called whenever a token has to be sent. By default, the mechanism you choose should provide the user with a link in the following format:
 
-`http://www.example.com/token=TOKEN&uid=UID`
+`http://www.example.com/token={TOKEN}&uid={UID}`
 
 That's how you could do this with emailjs:
 ```javascript
@@ -74,14 +78,20 @@ app.use(passwordless.acceptToken());
 
 `sessionSupport()` makes the user login persistent, so the user will stay logged in. It has to come after your session middleware. Have a look at [express-session](https://github.com/expressjs/session) how to setup sessions if you are unsure.
 
-`acceptToken()` will accept any incoming requests for tokens (see the URL in step 5). If you like, you could also restrict that to certain URLs.
+`acceptToken()` will accept any incoming requests for tokens (see the URL in step 5). If you like, you could also restrict that to certain URLs:
+```javascript
+router.get('/', passwordless.acceptToken(), 
+	function(req, res) {
+		res.render('homepage');
+});
+```
 
 ### 7. The router
 The following takes for granted that you've already setup your router `var router = express.Router();` as explained in the [express docs](http://expressjs.com/4x/api.html#router)
 
 You will need at least URLs to:
-* Display a page asking for people's email (or other medium)
-* Receive the details (via POST) and identify the user
+* Display a page asking for people's email (or phone number, ...)
+* Receive these details (via POST) and identify the user
 
 For example like this:
 ```javascript
@@ -131,7 +141,7 @@ router.post('/sendtoken',
 		function(user, delivery, callback) {
 			for (var i = users.length - 1; i >= 0; i--) {
 				if(users[i].email === user.toLowerCase()) {
-				return callback(null, users[i].id);
+					return callback(null, users[i].id);
 				}
 			}
 			callback(null, null);
@@ -173,10 +183,26 @@ router.use('/admin', passwordless.restricted());
 ```
 
 ### 10. Who is logged in?
-Passwordless stores the user ID in req.user (at least by default). So, if you want to display the user's details or use them for further requests, you can do something such as:
+Passwordless stores the user ID in req.user (at least by default). So, if you want to display the user's details or use them for further requests, do something like:
 ```javascript
 router.get('/admin', passwordless.restricted(),
 	function(req, res) {
 		res.render('admin', { user: req.user });
 });
 ```
+You could also create a middleware that is adding the user to any request and enriching it with all the user details. Make sure, though, that you are adding this middleware after `acceptToken()` and `sessionSupport()`:
+```javascript
+app.use(function(req, res, next) {
+	if(req.user) {
+		User.findById(req.user, function(error, user) {
+			res.locals.user = user;
+			next();
+		});
+	} else { 
+		next();
+	}
+})
+```
+
+### Conclusion
+I hope this helps you getting started with your own app! If you need more details check out the [example](https://github.com/florianheinemann/passwordless/tree/master/examples/simple-mail), the [deep dive](https://passwordless.net/deepdive), or the [documentation](https://passwordless.net/docs/Passwordless.html). Also, don't hesitate to raise comments and questions on [GitHub](https://github.com/florianheinemann/passwordless/issues).

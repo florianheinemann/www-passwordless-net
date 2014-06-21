@@ -7,14 +7,19 @@ router.get('/', function(req, res) {
 		error: req.flash('passwordless')[0], success: req.flash('passwordless-success')[0], homepage: true });
 });
 
-/* GET home page. */
+/* GET get started. */
 router.get('/getstarted', function(req, res) {
 	res.render('getstarted');
 });
 
-/* GET home page. */
+/* GET deep dive. */
 router.get('/deepdive', function(req, res) {
 	res.render('deepdive');
+});
+
+/* GET deep dive. */
+router.get('/about', function(req, res) {
+	res.render('about');
 });
 
 module.exports = router;

@@ -26,9 +26,13 @@ router.post('/login',
 ```
 
 ### Error flashes
-Flashes are error messages that are pushed to the user e.g. after a redirect to display more details about an issue e.g. an unsuccessful login attempt. You need flash middleware such as [connect-flash](https://www.npmjs.org/package/connect-flash).
+Error flashes are session-based error messages that are pushed to the user with the next request. For example, you might want to show a certain message when the user authentication was not successful or when a user was redirected after accessing a resource she should not have access to. To make this work, you need to have sessions enabled and a flash middleware such as [connect-flash](https://www.npmjs.org/package/connect-flash) installed.
 
-You can use them in any situation where you can use `failureRedirect` (see above). However, they can never be used without `failureRedirect`. As an example:
+Error flashes are supported in any middleware of Passwordless that supports `failureRedirect` (see above) but only(!) if `failureRedirect` is also supplied: 
+- `restricted()` when the user is not authorized to access the resource
+- `requestToken()` when the supplied user details are unknown
+
+As an example:
 ```javascript
 router.post('/login', 
 	passwordless.requestToken(function(user, delivery, callback) {
@@ -39,7 +43,7 @@ router.post('/login',
 });
 ```
 
-The error flashes are pushed onto the `passwordless` array. Check out the [connect-flash docs](https://github.com/jaredhanson/connect-flash) of to pull the error messages, but a typical scenario could look like this:
+The error flashes are pushed onto the `passwordless` array of your flash middleware. Check out the [connect-flash docs](https://github.com/jaredhanson/connect-flash) how to pull the error messages, but a typical scenario should look like this:
 
 ```javascript
 router.get('/mistake',
@@ -52,8 +56,40 @@ router.get('/mistake',
 });
 ```
 
+### Success flashes
+Similar to error flashes success flashes are session-based messages that are pushed to the user with the next request. For example, you might want to show a certain message when the user has clicked on the token URL and the token was accepted by the system. To make this work, you need to have sessions enabled and a flash middleware such as [connect-flash](https://www.npmjs.org/package/connect-flash) installed.
+
+Success flashes are supported by the following middleware of Passwordless:
+- `acceptToken()` when the token was successfully validated
+- `logout()` when the user was logged in and was successfully logged out
+- `requestToken()` when the token was successfully stored and send out to the user
+
+Consider the following example:
+```javascript
+router.get('/logout', passwordless.logout( 
+	{successFlash: 'Hope to see you soon!'} ),
+	function(req, res) {
+  	res.redirect('/home');
+});
+```
+
+The messages are pushed onto the `passwordless-success` array of your flash middleware. Check out the [connect-flash docs](https://github.com/jaredhanson/connect-flash) how to pull the messages, but a typical scenario should look like this:
+
+```javascript
+router.get('/home',
+	function(req, res) {
+		var successes = req.flash('passwordless-success'), html;
+		for (var i = successes.length - 1; i >= 0; i--) {
+			html += '<p>' + successes[i] + '</p>';
+		}
+		res.send(200, html);
+});
+```
+
 ### 2-step authentication (e.g. for SMS)
-For some token-delivery channels you want to have the shortest possible token (e.g. for text messages). One way to do so is to transport only the token while keeping the UID in the session. In such a scenario the user would type in his phone number, hit submit, be redirected to another page where she has to type in the received token, and then hit submit another time. To achieve this, requestToken stores the requested UID in `req.passwordless.uidToAuth`. Putting it all together, take the following steps:
+For some token-delivery channels you want to have the shortest possible token (e.g. for text messages). One way to do so is to remove the user ID from the token URL and to only keep the token for itself. The user ID is then kept in the session. In practice his could look like this: A user types in his phone number, hits submit, is redirected to another page where she has to type in the token received per SMS, and then hit submit another time. 
+
+To achieve this, requestToken stores the requested UID in `req.passwordless.uidToAuth`. Putting it all together, take the following steps:
 
 **1: Read out `req.passwordless.uidToAuth`**
 
@@ -92,7 +128,7 @@ router.post('/auth', passwordless.acceptToken({ allowPost: true }),
 ```
 
 ### Successful login and redirect to origin
-Passwordless supports the redirect of users to the login page, remembering the original URL, and then redirecting them again to the originally requested page when the token has been submitted. Due to the many steps involved, several modifications have to be undertaken:
+Passwordless supports the redirect of users to the login page, remembering the original URL, and then redirecting them again to the originally requested page as soon as the token has been accepted. Due to the many steps involved, several modifications have to be undertaken:
 
 **1: Set `originField` and `failureRedirect` for passwordless.restricted()**
 
@@ -132,7 +168,7 @@ app.use(passwordless.acceptToken( { enableOriginRedirect: true } ));
 ```
 
 ### Several delivery strategies
-In case you want to use several ways to send out tokens you have to add several delivery strategies as shown below:
+In case you want to use several ways to send out tokens you have to add several delivery strategies to Passwordless as shown below:
 ```javascript
 passwordless.addDelivery('email', 
 	function(tokenToSend, uidToSend, recipient, callback) {
@@ -159,15 +195,16 @@ router.post('/sendtoken',
 ```
 
 ### Modify lifetime of a token
+This is particularly useful if you use shorter tokens than the default to keep security on a high level:
 ```javascript
-// Lifetime in ms for the specific delivert strategy
+// Lifetime in ms for the specific delivery strategy
 passwordless.addDelivery(
 	function(tokenToSend, uidToSend, recipient, callback) {
 		// send the token to recipient
 }, { ttl: 1000*60*10 });
 ```
 ### Different tokens
-Different token generators can be provided by:
+You can generate your own tokens. This is not recommended except you face delivery constraints such as SMS-based authentication. If you reduce the complexity of the token, please consider reducing as well the lifetime of the token (see above):
 ```javascript
 passwordless.addDelivery(
 	function(tokenToSend, uidToSend, recipient, callback) {
