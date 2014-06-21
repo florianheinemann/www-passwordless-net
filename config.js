@@ -3,7 +3,7 @@
 var config = {};
 config.mongodb = {};
 config.http = {};
-config.sendgrid = {};
+config.mandrill = {};
 config.ga = {};
 
 config.mongodb.host = process.env.MONGODB_HOST || '127.0.0.1';
@@ -29,10 +29,9 @@ config.http.cookie_secret = process.env.HTTP_COOKIE_SECRET || 'YeukhPqijei86QWt3
 config.http.trust_proxy = process.env.HTTP_TRUST_PROXY;
 config.http.enforce_ssl = process.env.HTTP_ENFORCE_SSL;
 
-config.sendgrid.from = process.env.SENDGRID_FROM || 'AN EMAIL ADDRESS';
-config.sendgrid.api_user = process.env.SENDGRID_API_USER || 'API USER';
-config.sendgrid.api_key = process.env.SENDGRID_API_KEY || 'API KEY';
-config.sendgrid.subject = process.env.SENDGRID_SUBJECT || 'SUBJECT';
+config.mandrill.from = process.env.MANDRILL_FROM || 'AN EMAIL ADDRESS';
+config.mandrill.api_key = process.env.MANDRILL_API_KEY || 'API KEY';
+config.mandrill.subject = process.env.MANDRILL_SUBJECT || 'SUBJECT';
 
 config.ga.id = process.env.GA_ID || '';
 config.ga.domain = process.env.GA_DOMAIN || '';

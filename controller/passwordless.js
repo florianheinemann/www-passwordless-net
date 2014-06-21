@@ -3,8 +3,23 @@
 var passwordless = require('passwordless');
 var MongoStore = require('passwordless-mongostore');
 var config = require('../config');
-var sendgrid  = require('sendgrid')(config.sendgrid.api_user, config.sendgrid.api_key);
 var User = require('../models/user');
+
+var mandrill = require('mandrill-api/mandrill');
+var mandrill_client = new mandrill.Mandrill(config.mandrill.api_key);
+
+var emailText = function(html, token, uid) {
+	var startP = function() { return (html) ? '<p>' : ''; }
+	var endP = function() { return (html) ? '</p>' : '\n\n'; }
+	var linkA = function(url) { return (html) ? ('<a href="' + url + '">' + url + '</a>') : url; }
+	return startP() + 'Hello!' + endP() + 
+					startP() + 'You have successfully set up your Passwordless acount and you can now access ' +
+					'it by clicking on the following link:' + endP() + 
+					startP() + linkA(config.http.host_url + '?token=' + encodeURIComponent(token) 
+					+ '&uid=' + encodeURIComponent(uid)) + endP() + 
+					startP() + 'See you soon!' + endP() + 
+					startP() + 'Your Passwordless Team' + endP();
+};
 
 module.exports = function(app) {
 
@@ -15,20 +30,31 @@ module.exports = function(app) {
 	passwordless.addDelivery(
 		function(tokenToSend, uidToSend, recipient, callback) {
 
-			sendgrid.send({
-				to:       recipient,
-				from:     config.sendgrid.from,
-				subject:  config.sendgrid.subject,
-				text:    'Hello!\n\nYou have successfully set up your Passwordless acount and you can now access ' +
-					'it by clicking on the following link: \n\n'
-					+ config.http.host_url + '?token=' + encodeURIComponent(tokenToSend) 
-					+ '&uid=' + encodeURIComponent(uidToSend) + '  \n\nSee you soon!'
-			}, function(err, json) {
-				if (err) { 
-					console.error(err);
-				}
-				callback(err);
-			});
+			var message = {
+			    "html": emailText(true, tokenToSend, uidToSend),
+			    "text": emailText(false, tokenToSend, uidToSend),
+			    "subject": config.mandrill.subject,
+			    "from_email": config.mandrill.from,
+			    "from_name": "Passwordless",
+			    "to": [{
+			            "email": recipient,
+			            "name": "",
+			            "type": "to"
+			        }],
+			    "headers": {
+			        "Reply-To": config.mandrill.from
+			    },
+			};
+
+			mandrill_client.messages.send({"message": message, "async": false, "ip_pool": null, "send_at": null}, 
+				function(result) {
+    				// success
+    				callback();
+				}, function(e) {
+					var err = 'An email delivery error occurred: ' + e.name + ' - ' + e.message;
+				    console.log(err);
+				    callback(err);
+				});
 		});
 
 	app.use(passwordless.sessionSupport());
