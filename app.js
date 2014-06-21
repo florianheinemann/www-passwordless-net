@@ -27,7 +27,7 @@ if(config.http.enforce_ssl) {
     app.use(enforce.HTTPS(config.http.trust_proxy));
 }
 
-app.use(favicon());
+app.use(favicon('public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
