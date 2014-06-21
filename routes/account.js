@@ -6,7 +6,7 @@ var passwordless = require('passwordless');
 var User = require('../models/user');
 
 /* GET logout. */
-router.get('/logout', passwordless.logout(),
+router.get('/logout', passwordless.logout( {successFlash: 'Hope to see you soon!'} ),
 	function(req, res) {
   res.redirect('/');
 });
@@ -46,9 +46,10 @@ router.post('/sendtoken',
 					})
 				}
 			})
-		}, { failureRedirect: '/', failureFlash: 'We had issues sending out this email... Could you try it at a later moment?' }),
+		}, { failureRedirect: '/', 
+				failureFlash: 'We had issues sending out this email... Could you try it at a later moment?',
+				successFlash: 'You should have an email in your inbox any minute now...!' }),
 	function(req, res) {
-		req.flash('success', 'You should have an email in your inbox any minute now...!');
   		res.redirect('/');
 });
 

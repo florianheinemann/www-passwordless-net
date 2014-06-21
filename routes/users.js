@@ -32,6 +32,7 @@ router.post('/edit',
 					req.flash('error', 'Error updating your record. Maybe the used email address already exists?');
 					res.redirect('/users/edit');
 				} else {
+					req.flash('passwordless-success', 'Your account has been updated!');
 					res.redirect('/');
 				}
 			})

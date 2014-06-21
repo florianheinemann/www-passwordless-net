@@ -25,14 +25,14 @@ module.exports = function(app) {
 					+ '&uid=' + encodeURIComponent(uidToSend)
 			}, function(err, json) {
 				if (err) { 
-					return console.error(err);
+					console.error(err);
 				}
 				callback(err);
 			});
 		});
 
 	app.use(passwordless.sessionSupport());
-	app.use(passwordless.acceptToken());
+	app.use(passwordless.acceptToken( {successFlash: 'You are logged in now. Welcome to Passwordless!'} ));
 
 	// For every request: provide user data to the view
 	app.use(function(req, res, next) {
