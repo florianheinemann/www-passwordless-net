@@ -34,6 +34,14 @@ app.use(bodyParser.urlencoded());
 app.use(expressValidator());
 expressValidator.validator.extend('toLowerCase', function (str) { return str.toLowerCase(); });
 
+// Google Analytics
+if(config.ga.id && config.ga.domain) {
+    app.use(function(req, res, next) {
+        res.locals.ga = config.ga;
+        next();
+    });
+}
+
 app.use(cookieParser(config.http.cookie_secret));
 app.use(session({   secret: config.http.cookie_secret,
                     cookie: {maxAge: 60*60*24*365*10},
