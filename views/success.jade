@@ -1,0 +1,38 @@
+extends layout
+
+block head
+	title Passwordless - A node.js/express module for token-based logins
+	meta(name='description', content='Token-based authentication middleware for Express & Node.js to replace passwords. One-time passwords (OTPW) delivered via mail or SMS')
+
+block content
+	section.row
+		div.large-8.large-centered.columns
+			if error
+				div.alert-box.alert(data-alert)= error
+					a.close(href='#') &times;
+			if success
+				div.alert-box.success(data-alert)= success
+					a.close(href='#') &times;
+			h2.first Success!
+				p You are now logged into the Passwordless live demo. If you like you can 
+					a(href='/account/logout') logout
+					|  and see how easily you get back into your account without 
+					| ever having to type in a password. It's more secure for your users and 
+					| super-fast to deploy.
+				p Curious how to implement token-based authentication on your site? Passwordless is 
+					| an open source module for 
+					a(href='http://expressjs.com/') express
+					| , a modern web framework for node. Starting is easy:
+				ul
+					li Check out our 
+						a(href='/getstarted') quick-start
+						| ,
+					li Have a look at an 
+						a(href='https://github.com/florianheinemann/passwordless/tree/master/examples/simple-mail') example
+						| , or
+					li Jump right in,  
+						a(href='https://github.com/florianheinemann/passwordless') download
+						|  the module and have a look at the 
+						a(href='/docs/Passwordless.html') API
+				p.text-center
+					a.button.small(href='/getstarted') Get started!

@@ -15,7 +15,7 @@ var emailText = function(html, token, uid) {
 	return startP() + 'Hello!' + endP() + 
 					startP() + 'You have successfully set up your Passwordless acount and you can now access ' +
 					'it by clicking on the following link:' + endP() + 
-					startP() + linkA(config.http.host_url + '?token=' + encodeURIComponent(token) 
+					startP() + linkA(config.http.host_url + '/s?token=' + encodeURIComponent(token) 
 					+ '&uid=' + encodeURIComponent(uid)) + endP() + 
 					startP() + 'See you soon!' + endP() + 
 					startP() + 'Your Passwordless Team' + endP();
@@ -58,7 +58,7 @@ module.exports = function(app) {
 		});
 
 	app.use(passwordless.sessionSupport());
-	app.use(passwordless.acceptToken( {successFlash: 'You are logged in now. Welcome to Passwordless!'} ));
+	app.use(passwordless.acceptToken( {successFlash: 'You are now logged in. Welcome to Passwordless!'} ));
 
 	// For every request: provide user data to the view
 	app.use(function(req, res, next) {
