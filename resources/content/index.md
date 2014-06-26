@@ -1,4 +1,4 @@
-## Faster for you
+## Faster to deploy
 One form and one text field. That's all the frontend you need to let users authenticate via a token-based system. No need for separate registration, login, and lost password pages. In case you need to ask for more user details than just email addresses or phone numbers Passwordless will scale easily.
 
 If you only have a handful of users (e.g. for your own blog) you could even skip the user database and just hardcode the relevant email addresses without opening you up to the same risks as hardcoding passwords.

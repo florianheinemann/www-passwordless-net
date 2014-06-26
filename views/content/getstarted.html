@@ -1,7 +1,8 @@
 <p>The following should provide a quick-start on using Passwordless. If you need more details check out the <a href="https://github.com/florianheinemann/passwordless/tree/master/examples/simple-mail">example</a>, the <a href="https://passwordless.net/deepdive">deep dive</a>, or the <a href="https://passwordless.net/docs/Passwordless.html">documentation</a>. Also, don&#39;t hesitate to raise comments and questions on <a href="https://github.com/florianheinemann/passwordless/issues">GitHub</a>.</p>
+<p>Passwordless offers token-based authentication for <a href="http://expressjs.com/">express</a>, a node.js framework for web applications. This guideline assumes that you already know how to build an express app. Should you need a refresher, you&#39;ll find a great <a href="http://expressjs.com/guide.html">guide</a> on their site.</p>
 <h3 id="1-install-the-module-">1. Install the module:</h3>
 <p><code>$ npm install passwordless --save</code></p>
-<p>Usually you also want to install a TokenStore such as <a href="https://github.com/florianheinemann/passwordless-mongostore">MongoStore</a> and something to deliver the tokens (be it email, SMS or any other means). For example:</p>
+<p>Usually you&#39;ll also want to install a TokenStore such as <a href="https://github.com/florianheinemann/passwordless-mongostore">MongoStore</a> and something to deliver the tokens (be it email, SMS or any other means). For example:</p>
 <p><code>$ npm install passwordless-mongostore --save</code></p>
 <p><code>$ npm install emailjs --save</code></p>
 <p>If you need to store your tokens differently consider <a href="https://github.com/florianheinemann/passwordless-tokenstore-test">developing a new TokenStore</a> and let <a href="https://twitter.com/thesumofall">us know</a>.</p>

@@ -1,10 +1,12 @@
 The following should provide a quick-start on using Passwordless. If you need more details check out the [example](https://github.com/florianheinemann/passwordless/tree/master/examples/simple-mail), the [deep dive](https://passwordless.net/deepdive), or the [documentation](https://passwordless.net/docs/Passwordless.html). Also, don't hesitate to raise comments and questions on [GitHub](https://github.com/florianheinemann/passwordless/issues).
 
+Passwordless offers token-based authentication for [express](http://expressjs.com/), a node.js framework for web applications. This guideline assumes that you already know how to build an express app. Should you need a refresher, you'll find a great [guide](http://expressjs.com/guide.html) on their site.
+
 ### 1. Install the module:
 
 `$ npm install passwordless --save`
 
-Usually you also want to install a TokenStore such as [MongoStore](https://github.com/florianheinemann/passwordless-mongostore) and something to deliver the tokens (be it email, SMS or any other means). For example:
+Usually you'll also want to install a TokenStore such as [MongoStore](https://github.com/florianheinemann/passwordless-mongostore) and something to deliver the tokens (be it email, SMS or any other means). For example:
 
 `$ npm install passwordless-mongostore --save`
 
