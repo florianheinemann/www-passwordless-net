@@ -2,7 +2,7 @@
 <p>Passwordless offers token-based authentication for <a href="http://expressjs.com/">express</a>, a node.js framework for web applications. This guideline assumes that you already know how to build an express app. Should you need a refresher, you&#39;ll find a great <a href="http://expressjs.com/guide.html">guide</a> on their site.</p>
 <h3 id="1-install-the-module-">1. Install the module:</h3>
 <p><code>$ npm install passwordless --save</code></p>
-<p>Usually you&#39;ll also want to install a TokenStore such as <a href="https://github.com/florianheinemann/passwordless-mongostore">MongoStore</a> or <a href="https://github.com/florianheinemann/passwordless-redisstore">RedisStore</a> and something to deliver the tokens (be it email, SMS or any other means). For example:</p>
+<p>You&#39;ll also want to install a TokenStore such as <a href="https://github.com/florianheinemann/passwordless-mongostore">MongoStore</a> or <a href="https://github.com/florianheinemann/passwordless-redisstore">RedisStore</a> and something to deliver the tokens (be it email, SMS or any other means). For example:</p>
 <p><code>$ npm install passwordless-mongostore --save</code></p>
 <p><code>$ npm install emailjs --save</code></p>
 <p>If you need to store your tokens differently consider <a href="https://github.com/florianheinemann/passwordless-tokenstore-test">developing a new TokenStore</a> and let <a href="https://twitter.com/thesumofall">us know</a>.</p>
@@ -49,7 +49,7 @@ passwordless.addDelivery(
             subject: <span class="hljs-string">'Token for '</span> + host
         }, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, message)</span> {</span> 
             <span class="hljs-keyword">if</span>(err) {
-            console.log(err);
+                console.log(err);
             }
             callback(err);
         });
@@ -59,9 +59,11 @@ passwordless.addDelivery(
 <pre><code class="lang-javascript">app<span class="hljs-preprocessor">.use</span>(passwordless<span class="hljs-preprocessor">.sessionSupport</span>())<span class="hljs-comment">;</span>
 app<span class="hljs-preprocessor">.use</span>(passwordless<span class="hljs-preprocessor">.acceptToken</span>())<span class="hljs-comment">;</span>
 </code></pre>
-<p><code>sessionSupport()</code> makes the user login persistent, so the user will stay logged in. It has to come after your session middleware. Have a look at <a href="https://github.com/expressjs/session">express-session</a> how to setup sessions if you are unsure.</p>
+<p><code>sessionSupport()</code> makes the login persistent, so the user will stay logged in while browsing your site. It has to come after your session middleware. Have a look at <a href="https://github.com/expressjs/session">express-session</a> how to setup sessions if you are unsure.</p>
 <p><code>acceptToken()</code> will accept any incoming requests for tokens (see the URL in step 5). If you like, you could also restrict that to certain URLs:</p>
-<pre><code class="lang-javascript">router.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/'</span>, passwordless.acceptToken(), 
+<pre><code class="lang-javascript"><span class="hljs-comment">// Accept tokens only on /logged_in (be sure to change the</span>
+<span class="hljs-comment">// URL you deliver in step 5)</span>
+router.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/logged_in'</span>, passwordless.acceptToken(), 
     <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> {</span>
         res.render(<span class="hljs-string">'homepage'</span>);
 });
@@ -70,7 +72,7 @@ app<span class="hljs-preprocessor">.use</span>(passwordless<span class="hljs-pre
 <p>The following takes for granted that you&#39;ve already setup your router <code>var router = express.Router();</code> as explained in the <a href="http://expressjs.com/4x/api.html#router">express docs</a></p>
 <p>You will need at least URLs to:</p>
 <ul>
-<li>Display a page asking for people&#39;s email (or phone number, ...)</li>
+<li>Display a page asking for the user&#39;s email (or phone number, ...)</li>
 <li>Receive these details (via POST) and identify the user</li>
 </ul>
 <p>For example like this:</p>

@@ -6,7 +6,7 @@ Passwordless offers token-based authentication for [express](http://expressjs.co
 
 `$ npm install passwordless --save`
 
-Usually you'll also want to install a TokenStore such as [MongoStore](https://github.com/florianheinemann/passwordless-mongostore) or [RedisStore](https://github.com/florianheinemann/passwordless-redisstore) and something to deliver the tokens (be it email, SMS or any other means). For example:
+You'll also want to install a TokenStore such as [MongoStore](https://github.com/florianheinemann/passwordless-mongostore) or [RedisStore](https://github.com/florianheinemann/passwordless-redisstore) and something to deliver the tokens (be it email, SMS or any other means). For example:
 
 `$ npm install passwordless-mongostore --save`
 
@@ -65,7 +65,7 @@ passwordless.addDelivery(
 			subject: 'Token for ' + host
 		}, function(err, message) { 
 			if(err) {
-			console.log(err);
+				console.log(err);
 			}
 			callback(err);
 		});
@@ -78,11 +78,13 @@ app.use(passwordless.sessionSupport());
 app.use(passwordless.acceptToken());
 ```
 
-`sessionSupport()` makes the user login persistent, so the user will stay logged in. It has to come after your session middleware. Have a look at [express-session](https://github.com/expressjs/session) how to setup sessions if you are unsure.
+`sessionSupport()` makes the login persistent, so the user will stay logged in while browsing your site. It has to come after your session middleware. Have a look at [express-session](https://github.com/expressjs/session) how to setup sessions if you are unsure.
 
 `acceptToken()` will accept any incoming requests for tokens (see the URL in step 5). If you like, you could also restrict that to certain URLs:
 ```javascript
-router.get('/', passwordless.acceptToken(), 
+// Accept tokens only on /logged_in (be sure to change the
+// URL you deliver in step 5)
+router.get('/logged_in', passwordless.acceptToken(), 
 	function(req, res) {
 		res.render('homepage');
 });
@@ -92,7 +94,7 @@ router.get('/', passwordless.acceptToken(),
 The following takes for granted that you've already setup your router `var router = express.Router();` as explained in the [express docs](http://expressjs.com/4x/api.html#router)
 
 You will need at least URLs to:
-* Display a page asking for people's email (or phone number, ...)
+* Display a page asking for the user's email (or phone number, ...)
 * Receive these details (via POST) and identify the user
 
 For example like this:
