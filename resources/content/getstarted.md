@@ -6,13 +6,13 @@ Passwordless offers token-based authentication for [express](http://expressjs.co
 
 `$ npm install passwordless --save`
 
-You'll also want to install a TokenStore such as [MongoStore](https://github.com/florianheinemann/passwordless-mongostore) or [RedisStore](https://github.com/florianheinemann/passwordless-redisstore) and something to deliver the tokens (be it email, SMS or any other means). For example:
+You'll also want to install a [TokenStore](https://passwordless.net/plugins) such as [MongoStore](https://github.com/florianheinemann/passwordless-mongostore) and something to deliver the tokens (be it email, SMS or any other means). For example:
 
 `$ npm install passwordless-mongostore --save`
 
 `$ npm install emailjs --save`
 
-If you need to store your tokens differently consider [developing a new TokenStore](https://github.com/florianheinemann/passwordless-tokenstore-test) and let [us know](https://twitter.com/thesumofall).
+If you need to store your tokens differently consider [developing a new TokenStore](https://github.com/florianheinemann/passwordless-tokenstore-test) and [let us know](https://twitter.com/thesumofall).
 
 ### 2. Require the needed modules
 You will need:

@@ -24,6 +24,11 @@ router.get('/deepdive', function(req, res) {
 	res.render('deepdive');
 });
 
+/* GET get started. */
+router.get('/plugins', function(req, res) {
+	res.render('plugins');
+});
+
 /* GET deep dive. */
 router.get('/about', function(req, res) {
 	res.render('about');

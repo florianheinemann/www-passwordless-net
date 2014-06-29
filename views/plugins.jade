@@ -1,0 +1,17 @@
+extends layout
+
+block head
+	title Passwordless - Plugins
+	meta(name='description', content='Overview of extensions to Passwordless, a token-based authentication module for express')
+
+block content
+	section.row
+		div.large-8.large-centered.columns
+			if error
+				div.alert-box.alert(data-alert)= error
+					a.close(href='#') &times;
+			if success
+				div.alert-box.success(data-alert)= success
+					a.close(href='#') &times;
+			h2.first Plugins
+			include content/plugins.html
