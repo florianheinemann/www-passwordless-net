@@ -24,9 +24,14 @@ router.get('/deepdive', function(req, res) {
 	res.render('deepdive');
 });
 
-/* GET get started. */
+/* GET plugins. */
 router.get('/plugins', function(req, res) {
 	res.render('plugins');
+});
+
+/* GET examples. */
+router.get('/examples', function(req, res) {
+	res.render('examples');
 });
 
 /* GET deep dive. */
