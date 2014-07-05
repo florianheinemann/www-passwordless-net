@@ -6,7 +6,7 @@
 });
 </code></pre>
 <h3 id="redirects">Redirects</h3>
-<p>Redirect non-authorized users who try to access protected resources with <code>failureRedirect</code> (default is a 401 error page):</p>
+<p>Redirect non-authorised users who try to access protected resources with <code>failureRedirect</code> (default is a 401 error page):</p>
 <pre><code class="lang-javascript">router.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/restricted'</span>, 
     passwordless.restricted({ failureRedirect: <span class="hljs-string">'/login'</span> });
 </code></pre>
@@ -19,6 +19,11 @@
         <span class="hljs-comment">// success</span>
 });
 </code></pre>
+<p>After the successful authentication through <code>acceptToken()</code>, you can redirect the user to a specific URL with <code>successRedirect</code>:</p>
+<pre><code class="lang-javascript"><span class="hljs-tag">app</span><span class="hljs-class">.use</span>(<span class="hljs-tag">passwordless</span><span class="hljs-class">.acceptToken</span>(
+    <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">successRedirect</span>:<span class="hljs-value"> <span class="hljs-string">'/'</span> </span></span></span>}));
+</code></pre>
+<p>While the option <code>successRedirect</code> is not strictly needed, it is strongly recommended to use it to avoid leaking valid tokens via the referrer header of outgoing HTTP links on your site. When provided, the user will be forwarded to the given URL as soon as she has been authenticated. If not provided, Passwordless will simply call the next middleware.</p>
 <h3 id="error-flashes">Error flashes</h3>
 <p>Error flashes are session-based error messages that are pushed to the user with the next request. For example, you might want to show a certain message when the user authentication was not successful or when a user was redirected after accessing a resource she should not have access to. To make this work, you need to have sessions enabled and a flash middleware such as <a href="https://www.npmjs.org/package/connect-flash">connect-flash</a> installed.</p>
 <p>Error flashes are supported in any middleware of Passwordless that supports <code>failureRedirect</code> (see above) but only(!) if <code>failureRedirect</code> is also supplied: </p>
@@ -167,4 +172,4 @@ passwordless.addDelivery(
 }, {tokenAlgorithm: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span><span class="hljs-keyword">return</span> <span class="hljs-string">'random'</span>}});
 </code></pre>
 <h3 id="stateless-operation">Stateless operation</h3>
-<p>Just remove <code>app.use(passwordless.sessionSupport());</code> middleware. Every request for a restricted resource has then to be combined with a token and uid. Please consider the limited lifetime of tokens. You might want to extend it in such cases.</p>
+<p>Just remove the <code>app.use(passwordless.sessionSupport());</code> middleware. Every request for a restricted resource has then to be combined with a token and uid. Please consider the limited lifetime of tokens. You might want to extend it in such cases. Also, make sure you don&#39;t use <code>successRedirect</code> on the <code>acceptToken()</code> middleware.</p>

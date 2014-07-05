@@ -8,7 +8,7 @@ router.get('/', function(req, res) {
 });
 
 /* GET logged in. */
-router.get('/s', function(req, res) {
+router.get('/success', function(req, res) {
 	res.render('success', { validation: req.flash('validation')[0], 
 		error: req.flash('passwordless')[0], success: req.flash('passwordless-success')[0] });
 });

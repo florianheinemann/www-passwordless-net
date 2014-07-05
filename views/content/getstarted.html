@@ -57,10 +57,11 @@ passwordless.addDelivery(
 </code></pre>
 <h3 id="6-setup-the-middleware-for-express">6. Setup the middleware for express</h3>
 <pre><code class="lang-javascript">app<span class="hljs-preprocessor">.use</span>(passwordless<span class="hljs-preprocessor">.sessionSupport</span>())<span class="hljs-comment">;</span>
-app<span class="hljs-preprocessor">.use</span>(passwordless<span class="hljs-preprocessor">.acceptToken</span>())<span class="hljs-comment">;</span>
+app<span class="hljs-preprocessor">.use</span>(passwordless<span class="hljs-preprocessor">.acceptToken</span>({ successRedirect: <span class="hljs-string">'/'</span>}))<span class="hljs-comment">;</span>
 </code></pre>
 <p><code>sessionSupport()</code> makes the login persistent, so the user will stay logged in while browsing your site. It has to come after your session middleware. Have a look at <a href="https://github.com/expressjs/session">express-session</a> how to setup sessions if you are unsure.</p>
-<p><code>acceptToken()</code> will accept any incoming requests for tokens (see the URL in step 5). If you like, you could also restrict that to certain URLs:</p>
+<p><code>acceptToken()</code> will accept incoming tokens and authenticate the user (see the URL in step 5). While the option <code>successRedirect</code> is not strictly needed, it is strongly recommended to use it to avoid leaking valid tokens via the referrer header of outgoing HTTP links on your site. When provided, the user will be forwarded to the given URL as soon as she has been authenticated.</p>
+<p>If you like, you can also restrict the acceptance of tokens to certain URLs:</p>
 <pre><code class="lang-javascript"><span class="hljs-comment">// Accept tokens only on /logged_in (be sure to change the</span>
 <span class="hljs-comment">// URL you deliver in step 5)</span>
 router.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/logged_in'</span>, passwordless.acceptToken(), 

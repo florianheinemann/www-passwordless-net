@@ -75,12 +75,14 @@ passwordless.addDelivery(
 ### 6. Setup the middleware for express
 ```javascript
 app.use(passwordless.sessionSupport());
-app.use(passwordless.acceptToken());
+app.use(passwordless.acceptToken({ successRedirect: '/'}));
 ```
 
 `sessionSupport()` makes the login persistent, so the user will stay logged in while browsing your site. It has to come after your session middleware. Have a look at [express-session](https://github.com/expressjs/session) how to setup sessions if you are unsure.
 
-`acceptToken()` will accept any incoming requests for tokens (see the URL in step 5). If you like, you could also restrict that to certain URLs:
+`acceptToken()` will accept incoming tokens and authenticate the user (see the URL in step 5). While the option `successRedirect` is not strictly needed, it is strongly recommended to use it to avoid leaking valid tokens via the referrer header of outgoing HTTP links on your site. When provided, the user will be forwarded to the given URL as soon as she has been authenticated.
+
+If you like, you can also restrict the acceptance of tokens to certain URLs:
 ```javascript
 // Accept tokens only on /logged_in (be sure to change the
 // URL you deliver in step 5)
