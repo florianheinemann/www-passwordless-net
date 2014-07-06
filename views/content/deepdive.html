@@ -164,6 +164,12 @@ passwordless.addDelivery(
         <span class="hljs-comment">// send the token to recipient</span>
 }, { ttl: <span class="hljs-number">1000</span>*<span class="hljs-number">60</span>*<span class="hljs-number">10</span> });
 </code></pre>
+<h3 id="allow-token-reuse">Allow token reuse</h3>
+<p>By default, all tokens are invalidated after they have been used by the user. Should a user try to use the same token again and is not yet logged in, she will not be authenticated. In some cases (e.g. stateless operation or increased convenience) you might want to allow the reuse of tokens. Please be aware that this might open up your users to the risk of valid tokens being used by third parties without the user being aware of it.</p>
+<p>To enable the reuse of tokens call <code>init()</code> with the option <code>allowTokenReuse: true</code>, as shown here:</p>
+<pre><code class="lang-javascript"><span class="hljs-tag">passwordless</span><span class="hljs-class">.init</span>(<span class="hljs-tag">new</span> <span class="hljs-tag">TokenStore</span>(), 
+    <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">allowTokenReuse</span>:<span class="hljs-value"> true </span></span></span>});
+</code></pre>
 <h3 id="different-tokens">Different tokens</h3>
 <p>You can generate your own tokens. This is not recommended except you face delivery constraints such as SMS-based authentication. If you reduce the complexity of the token, please consider reducing as well the lifetime of the token (see above):</p>
 <pre><code class="lang-javascript">passwordless.addDelivery(
@@ -172,4 +178,9 @@ passwordless.addDelivery(
 }, {tokenAlgorithm: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span><span class="hljs-keyword">return</span> <span class="hljs-string">'random'</span>}});
 </code></pre>
 <h3 id="stateless-operation">Stateless operation</h3>
-<p>Just remove the <code>app.use(passwordless.sessionSupport());</code> middleware. Every request for a restricted resource has then to be combined with a token and uid. Please consider the limited lifetime of tokens. You might want to extend it in such cases. Also, make sure you don&#39;t use <code>successRedirect</code> on the <code>acceptToken()</code> middleware.</p>
+<p>Just remove the <code>app.use(passwordless.sessionSupport());</code> middleware. Every request for a restricted resource has then to be combined with a token and uid. You should consider the following points:</p>
+<ul>
+<li>By default, tokens are invalidated after their first use. For stateless operations you should call <code>passwordless.init()</code> with the following option: <code>passwordless.init(tokenStore, {allowTokenReuse:true})</code> (for details see above)</li>
+<li>Tokens have a limited lifetime. Consider extending it (for details see above), but be aware about the involved security risks</li>
+<li>Consider switching off redirects such as <code>successRedirect</code> on the <code>acceptToken()</code> middleware</li>
+</ul>

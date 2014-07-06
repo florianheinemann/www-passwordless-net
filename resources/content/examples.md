@@ -1,6 +1,5 @@
 ### Demos
 * [Simple-mail](https://github.com/florianheinemann/passwordless/tree/master/examples/simple-mail) - The simplest possible implementation of Passwordless
-* [Password-optional](https://github.com/florianheinemann/passwordless/tree/master/examples/password-optional) - Example how to implement a login with optional password
 * [SMSauth-example](https://github.com/rbudiharso/smsauth-example) - Showcase of how to authenticate via SMS using twilio. Thanks to [@rbudiharso](https://twitter.com/rbudiharso)
 
 ### Real applications

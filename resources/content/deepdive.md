@@ -210,6 +210,16 @@ passwordless.addDelivery(
 		// send the token to recipient
 }, { ttl: 1000*60*10 });
 ```
+
+### Allow token reuse
+By default, all tokens are invalidated after they have been used by the user. Should a user try to use the same token again and is not yet logged in, she will not be authenticated. In some cases (e.g. stateless operation or increased convenience) you might want to allow the reuse of tokens. Please be aware that this might open up your users to the risk of valid tokens being used by third parties without the user being aware of it.
+
+To enable the reuse of tokens call `init()` with the option `allowTokenReuse: true`, as shown here:
+```javascript
+passwordless.init(new TokenStore(), 
+	{ allowTokenReuse: true });
+```
+
 ### Different tokens
 You can generate your own tokens. This is not recommended except you face delivery constraints such as SMS-based authentication. If you reduce the complexity of the token, please consider reducing as well the lifetime of the token (see above):
 ```javascript
@@ -220,4 +230,7 @@ passwordless.addDelivery(
 ```
 
 ### Stateless operation
-Just remove the `app.use(passwordless.sessionSupport());` middleware. Every request for a restricted resource has then to be combined with a token and uid. Please consider the limited lifetime of tokens. You might want to extend it in such cases. Also, make sure you don't use `successRedirect` on the `acceptToken()` middleware.
+Just remove the `app.use(passwordless.sessionSupport());` middleware. Every request for a restricted resource has then to be combined with a token and uid. You should consider the following points:
+* By default, tokens are invalidated after their first use. For stateless operations you should call `passwordless.init()` with the following option: `passwordless.init(tokenStore, {allowTokenReuse:true})` (for details see above)
+* Tokens have a limited lifetime. Consider extending it (for details see above), but be aware about the involved security risks
+* Consider switching off redirects such as `successRedirect` on the `acceptToken()` middleware

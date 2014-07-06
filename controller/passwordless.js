@@ -59,6 +59,7 @@ module.exports = function(app) {
 
 	app.use(passwordless.sessionSupport());
 	app.use(passwordless.acceptToken( {	successFlash: 'You are now logged in. Welcome to Passwordless!', 
+										failureFlash: 'The supplied token is not valid (anymore). Please request another one.',
 										successRedirect: '/success' } ));
 
 	// For every request: provide user data to the view
