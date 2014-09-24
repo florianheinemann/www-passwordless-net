@@ -18,3 +18,16 @@ code, pre {
 		padding-top: 6rem;
 	}
 }
+
+@font-face {
+	font-family: 'Fira Sans';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Fira Sans'), local('FiraSans-Regular'), url(FiraSans-Regular.woff) format('woff');
+}
+@font-face {
+	font-family: 'Fira Sans';
+	font-style: normal;
+	font-weight: 500;
+	src: local('Fira Sans Medium'), local('FiraSans-Medium'), url(FiraSans-Medium.woff) format('woff');
+}
