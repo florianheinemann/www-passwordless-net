@@ -1,7 +1,8 @@
 ### TokenStores
 TokenStores are used to store valid tokens for the time of their validity. A couple of implementations already exist, but it is also quick and easy to develop your own TokenStore with the help of the provided test framework.
-* [MongoStore](https://github.com/florianheinemann/passwordless-mongostore): Implementation for MongoDB
 * [RedisStore](https://github.com/florianheinemann/passwordless-redisstore): Implementation for Redis
+* [MongoStore](https://github.com/florianheinemann/passwordless-mongostore): Implementation for MongoDB
+* [MongoStore (bcrypt-nodejs)](https://www.npmjs.org/package/passwordless-mongostore-bcrypt-node): Same as above but using [bcrypt-nodejs](https://github.com/shaneGirish/bcrypt-nodejs) instead of the native version of bcrypt
 
 Aware of any other implementations? [Let us know](https://twitter.com/thesumofall)
 
