@@ -76,7 +76,7 @@
 });
 </code></pre>
 <h3 id="2-step-authentication-e-g-for-sms-">2-step authentication (e.g. for SMS)</h3>
-<p>For some token-delivery channels you want to have the shortest possible token (e.g. for text messages). One way to do so is to remove the user ID from the token URL and to only keep the token for itself. The user ID is then kept in the session. In practice his could look like this: A user types in his phone number, hits submit, is redirected to another page where she has to type in the token received per SMS, and then hit submit another time. </p>
+<p>For some token-delivery channels you want to have the shortest possible token (e.g. for text messages). One way to do so is to remove the user ID from the token URL and to only keep the token for itself. The user ID is then kept in the session. In practice this could look like this: A user types in his phone number, hits submit, is redirected to another page where she has to type in the token received per SMS, and then hit submit another time. </p>
 <p>To achieve this, requestToken stores the requested UID in <code>req.passwordless.uidToAuth</code>. Putting it all together, take the following steps:</p>
 <p><strong>1: Read out <code>req.passwordless.uidToAuth</code></strong></p>
 <pre><code class="lang-javascript"><span class="hljs-comment">// Display a new form after the user has submitted the phone number</span>
