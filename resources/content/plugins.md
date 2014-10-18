@@ -3,6 +3,7 @@ TokenStores are used to store valid tokens for the time of their validity. A cou
 * [RedisStore](https://github.com/florianheinemann/passwordless-redisstore): Implementation for Redis
 * [MongoStore](https://github.com/florianheinemann/passwordless-mongostore): Implementation for MongoDB
 * [MongoStore (bcrypt-nodejs)](https://www.npmjs.org/package/passwordless-mongostore-bcrypt-node): Same as above but using [bcrypt-nodejs](https://github.com/shaneGirish/bcrypt-nodejs) instead of the native version of bcrypt
+* [PouchStore](https://github.com/daleharvey/passwordless-pouchstore): Implementation for PouchDB / CouchDB
 
 Aware of any other implementations? [Let us know](https://twitter.com/thesumofall)
 
