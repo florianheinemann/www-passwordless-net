@@ -103,7 +103,7 @@ router.post(<span class="hljs-string">'/sendtoken'</span>,
           res.render(<span class="hljs-string">'sent'</span>);
 });
 </code></pre>
-<p>What happens here? <code>passwordless.requestToken(getUserId)</code> has two tasks: Making sure the email address exists <em>and</em> transforming it into a proper user ID that will become the identifier from now on. For example user@example.com becomes 123 or &#39;u1002&#39;. You call <code>callback(null, ID)</code> if all is good, <code>callback(null, null)</code> if you don&#39;t know this email address, and <code>callback(&#39;error&#39;, null)</code> if something went wrong.</p>
+<p>What happens here? <code>passwordless.requestToken(getUserId)</code> has two tasks: Making sure the email address exists <em>and</em> transforming it into a proper user ID that will become the identifier from now on. For example user@example.com becomes 123 or &#39;u1002&#39;. You call <code>callback(null, ID)</code> if all is good, <code>callback(null, null)</code> if you don&#39;t know this email address, and <code>callback(&#39;error&#39;, null)</code> if something went wrong. At this stage, please make sure that you&#39;ve added middleware to parse POST data (such as <a href="https://github.com/expressjs/body-parser">body-parser</a>.</p>
 <p>Most likely, you want a user registration page where you take an email address and any other user details and generate an ID. However, you can also simply accept any email address by skipping the lookup and just calling <code>callback(null, user)</code>.</p>
 <p>If you have just a fixed list of users do the following:</p>
 <pre><code class="lang-javascript"><span class="hljs-comment">// GET login as above</span>
