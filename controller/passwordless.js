@@ -13,7 +13,7 @@ var emailText = function(html, token, uid) {
 	var endP = function() { return (html) ? '</p>' : '\n\n'; }
 	var linkA = function(url) { return (html) ? ('<a href="' + url + '">' + url + '</a>') : url; }
 	return startP() + 'Hello!' + endP() + 
-					startP() + 'You have successfully set up your Passwordless acount and you can now access ' +
+					startP() + 'You have successfully set up your Passwordless account and you can now access ' +
 					'it by clicking on the following link:' + endP() + 
 					startP() + linkA(config.http.host_url + '/?token=' + encodeURIComponent(token) 
 					+ '&uid=' + encodeURIComponent(uid)) + endP() + 
@@ -58,7 +58,7 @@ module.exports = function(app) {
 		});
 
 	app.use(passwordless.sessionSupport());
-	app.use(passwordless.acceptToken( {	successFlash: 'You are now logged in. Welcome to Passwordless!', 
+	app.use(passwordless.acceptToken( {	successFlash: 'You are logged in. Welcome to Passwordless!', 
 										failureFlash: 'The supplied token is not valid (anymore). Please request another one.',
 										successRedirect: '/success' } ));
 

@@ -171,7 +171,7 @@ passwordless.addDelivery(
     <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">allowTokenReuse</span>:<span class="hljs-value"> true </span></span></span>});
 </code></pre>
 <h3 id="different-tokens">Different tokens</h3>
-<p>You can generate your own tokens. This is not recommended except you face delivery constraints such as SMS-based authentication. If you reduce the complexity of the token, please consider reducing as well the lifetime of the token (see above):</p>
+<p>You can generate your own tokens. This is not recommended except you face delivery constraints such as SMS-based authentication. If you reduce the complexity of your tokens, please consider reducing as well the lifetime of the tokens (see above):</p>
 <pre><code class="lang-javascript">passwordless.addDelivery(
     <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> {</span>
         <span class="hljs-comment">// send the token to recipient</span>

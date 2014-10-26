@@ -54,7 +54,7 @@ router.post('/sendtoken',
 			})
 		}, { failureRedirect: '/', 
 				failureFlash: 'We had issues sending out this email... Could you try it at a later moment?',
-				successFlash: 'You should have an email in your inbox any minute now...!' }),
+				successFlash: 'You should have an email in your inbox in a couple of seconds...!' }),
 	function(req, res) {
   		res.redirect('/');
 });

@@ -221,7 +221,7 @@ passwordless.init(new TokenStore(),
 ```
 
 ### Different tokens
-You can generate your own tokens. This is not recommended except you face delivery constraints such as SMS-based authentication. If you reduce the complexity of the token, please consider reducing as well the lifetime of the token (see above):
+You can generate your own tokens. This is not recommended except you face delivery constraints such as SMS-based authentication. If you reduce the complexity of your tokens, please consider reducing as well the lifetime of the tokens (see above):
 ```javascript
 passwordless.addDelivery(
 	function(tokenToSend, uidToSend, recipient, callback) {

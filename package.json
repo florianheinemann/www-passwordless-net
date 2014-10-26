@@ -19,9 +19,8 @@
     "mandrill-api": "^1.0.39",
     "mongoose": "^3.8.12",
     "morgan": "~1.0.0",
-    "passwordless": "^0.1.4",
-    "passwordless-mongostore": "0.0.6",
-    "sendgrid": "^1.0.5",
+    "passwordless": "^1.0.3",
+    "passwordless-mongostore": "^0.1.0",
     "static-favicon": "~1.0.0"
   },
   "devDependencies": {
