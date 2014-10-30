@@ -5,7 +5,8 @@ TokenStores are used to store valid tokens for the time of their validity. A cou
 * [MongoStore (bcrypt-nodejs)](https://www.npmjs.org/package/passwordless-mongostore-bcrypt-node): Same as above but using [bcrypt-nodejs](https://github.com/shaneGirish/bcrypt-nodejs) instead of the native version of bcrypt
 * [PouchStore](https://github.com/daleharvey/passwordless-pouchstore): Implementation for PouchDB / CouchDB (Thanks [@daleharvey](https://twitter.com/daleharvey))
 * [BookshelfStore](https://github.com/nnarhinen/passwordless-bookshelfstore): Implementation for Bookshelf.js (Thanks [@nnarhinen](https://twitter.com/nnarhinen))
-* [RethinkDB](https://github.com/staygrimm/passwordless-rethinkdbstore): Implementation for RethinkDB (Thanks [staygrimm](https://github.com/staygrimm))
+* [RethinkDBStore](https://github.com/staygrimm/passwordless-rethinkdbstore): Implementation for RethinkDB (Thanks [staygrimm](https://github.com/staygrimm))
+* [MemoryStore](https://github.com/lloydcotten/passwordless-memorystore): Memory-based implementation (Thanks [Lloyd Cotten](https://github.com/lloydcotten))
 
 Aware of any other implementations? [Let us know](https://twitter.com/thesumofall)
 
