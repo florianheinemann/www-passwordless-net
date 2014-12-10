@@ -6,6 +6,7 @@ TokenStores are used to store valid tokens for the time of their validity. A cou
 * [PouchStore](https://github.com/daleharvey/passwordless-pouchstore): Implementation for PouchDB / CouchDB (Thanks [@daleharvey](https://twitter.com/daleharvey))
 * [BookshelfStore](https://github.com/nnarhinen/passwordless-bookshelfstore): Implementation for Bookshelf.js (Thanks [@nnarhinen](https://twitter.com/nnarhinen))
 * [RethinkDBStore](https://github.com/staygrimm/passwordless-rethinkdbstore): Implementation for RethinkDB (Thanks [staygrimm](https://github.com/staygrimm))
+* [PostgreStore](https://github.com/Battochon/passwordless-postgrestore): Implementation for PostgreSQL (Thanks [Bruno Marques](http://marques.io))
 * [MemoryStore](https://github.com/lloydcotten/passwordless-memorystore): Memory-based implementation (Thanks [Lloyd Cotten](https://github.com/lloydcotten))
 
 Aware of any other implementations? [Let us know](https://twitter.com/thesumofall)
