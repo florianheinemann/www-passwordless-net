@@ -1,8 +1,9 @@
 ### TokenStores
 TokenStores are used to store valid tokens for the time of their validity. A couple of implementations already exist, but it is also quick and easy to develop your own TokenStore with the help of the provided test framework.
-* [RedisStore](https://github.com/florianheinemann/passwordless-redisstore): Implementation for Redis
 * [MongoStore](https://github.com/florianheinemann/passwordless-mongostore): Implementation for MongoDB
 * [MongoStore (bcrypt-nodejs)](https://www.npmjs.org/package/passwordless-mongostore-bcrypt-node): Same as above but using [bcrypt-nodejs](https://github.com/shaneGirish/bcrypt-nodejs) instead of the native version of bcrypt
+* [RedisStore](https://github.com/florianheinemann/passwordless-redisstore): Implementation for Redis
+* [RedisStore (bcrypt-nodejs)](https://www.npmjs.com/package/passwordless-redisstore-bcryptjs): Same as above but using [bcrypt-nodejs](https://github.com/shaneGirish/bcrypt-nodejs) instead of the native version of bcrypt (Thanks [Lloyd Cotten](https://github.com/lloydcotten))
 * [PouchStore](https://github.com/daleharvey/passwordless-pouchstore): Implementation for PouchDB / CouchDB (Thanks [@daleharvey](https://twitter.com/daleharvey))
 * [BookshelfStore](https://github.com/nnarhinen/passwordless-bookshelfstore): Implementation for Bookshelf.js (Thanks [@nnarhinen](https://twitter.com/nnarhinen))
 * [RethinkDBStore](https://github.com/staygrimm/passwordless-rethinkdbstore): Implementation for RethinkDB (Thanks [staygrimm](https://github.com/staygrimm))
