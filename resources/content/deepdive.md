@@ -17,7 +17,7 @@ router.get('/restricted',
 Redirect unsuccessful login attempts with `failureRedirect` (default is a 401 or 400 error page):
 ```javascript
 router.post('/login', 
-	passwordless.requestToken(function(user, delivery, callback) {
+	passwordless.requestToken(function(user, delivery, callback, req) {
 		// identify user
 }, { failureRedirect: '/login' }),
 	function(req, res){
@@ -42,7 +42,7 @@ Error flashes are supported in any middleware of Passwordless that supports `fai
 As an example:
 ```javascript
 router.post('/login', 
-	passwordless.requestToken(function(user, delivery, callback) {
+	passwordless.requestToken(function(user, delivery, callback, req) {
 		// identify user
 }, { failureRedirect: '/login', failureFlash: 'This user is unknown!' }),
 	function(req, res){
@@ -190,7 +190,7 @@ To simplify your code, provide the field `delivery` to your HTML page which subm
 ```javascript
 router.post('/sendtoken', 
 	passwordless.requestToken(
-		function(user, delivery, callback) {
+		function(user, delivery, callback, req) {
 			if(delivery === 'sms')
 				// lookup phone number
 			else if(delivery === 'email')

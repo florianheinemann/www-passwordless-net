@@ -59,7 +59,7 @@ module.exports = function(grunt) {
 		},
 		'curl-dir': {
 			'docs-root': {
-				src: ['https://raw.githubusercontent.com/florianheinemann/passwordless/master/docs/{Passwordless,index,passwordless.js}.html'],
+				src: ['https://raw.githubusercontent.com/florianheinemann/passwordless/master/docs/{Passwordless,index,global,passwordless.js}.html'],
 				dest: 'public/docs'
 			},
 			'styles': {

@@ -1,27 +1,27 @@
 <h3 id="logout">Logout</h3>
 <p>Just call <code>passwordless.logout()</code> as in:</p>
 <pre><code class="lang-javascript">router.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/logout'</span>, passwordless.logout(),
-    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> {</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> </span>{
         res.redirect(<span class="hljs-string">'/'</span>);
 });
 </code></pre>
 <h3 id="redirects">Redirects</h3>
 <p>Redirect non-authorised users who try to access protected resources with <code>failureRedirect</code> (default is a 401 error page):</p>
-<pre><code class="lang-javascript">router.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/restricted'</span>, 
-    passwordless.restricted({ failureRedirect: <span class="hljs-string">'/login'</span> });
+<pre><code class="lang-javascript"><span class="hljs-tag">router</span><span class="hljs-class">.get</span>(<span class="hljs-string">'/restricted'</span>, 
+    passwordless.<span class="hljs-function">restricted</span>({ <span class="hljs-attribute">failureRedirect</span>: <span class="hljs-string">'/login'</span> });
 </code></pre>
 <p>Redirect unsuccessful login attempts with <code>failureRedirect</code> (default is a 401 or 400 error page):</p>
 <pre><code class="lang-javascript">router.post(<span class="hljs-string">'/login'</span>, 
-    passwordless.requestToken(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(user, delivery, callback)</span> {</span>
+    passwordless.requestToken(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(user, delivery, callback, req)</span> </span>{
         <span class="hljs-comment">// identify user</span>
 }, { failureRedirect: <span class="hljs-string">'/login'</span> }),
-    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span>{</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span></span>{
         <span class="hljs-comment">// success</span>
 });
 </code></pre>
 <p>After the successful authentication through <code>acceptToken()</code>, you can redirect the user to a specific URL with <code>successRedirect</code>:</p>
-<pre><code class="lang-javascript"><span class="hljs-tag">app</span><span class="hljs-class">.use</span>(<span class="hljs-tag">passwordless</span><span class="hljs-class">.acceptToken</span>(
-    <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">successRedirect</span>:<span class="hljs-value"> <span class="hljs-string">'/'</span> </span></span></span>}));
+<pre><code class="lang-javascript"><span class="hljs-tag">app</span><span class="hljs-class">.use</span>(passwordless.<span class="hljs-function">acceptToken</span>(
+    { <span class="hljs-attribute">successRedirect</span>: <span class="hljs-string">'/'</span> }));
 </code></pre>
 <p>While the option <code>successRedirect</code> is not strictly needed, it is strongly recommended to use it to avoid leaking valid tokens via the referrer header of outgoing HTTP links on your site. When provided, the user will be forwarded to the given URL as soon as she has been authenticated. If not provided, Passwordless will simply call the next middleware.</p>
 <h3 id="error-flashes">Error flashes</h3>
@@ -33,21 +33,21 @@
 </ul>
 <p>As an example:</p>
 <pre><code class="lang-javascript">router.post(<span class="hljs-string">'/login'</span>, 
-    passwordless.requestToken(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(user, delivery, callback)</span> {</span>
+    passwordless.requestToken(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(user, delivery, callback, req)</span> </span>{
         <span class="hljs-comment">// identify user</span>
 }, { failureRedirect: <span class="hljs-string">'/login'</span>, failureFlash: <span class="hljs-string">'This user is unknown!'</span> }),
-    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span>{</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span></span>{
         <span class="hljs-comment">// success</span>
 });
 </code></pre>
 <p>The error flashes are pushed onto the <code>passwordless</code> array of your flash middleware. Check out the <a href="https://github.com/jaredhanson/connect-flash">connect-flash docs</a> how to pull the error messages, but a typical scenario should look like this:</p>
-<pre><code class="lang-javascript"><span class="hljs-transposed_variable">router.</span>get(<span class="hljs-string">'/mistake'</span>,
+<pre><code class="lang-javascript">router.get(<span class="hljs-string">'/mistake'</span>,
     <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> {</span>
-        var errors = <span class="hljs-transposed_variable">req.</span>flash(<span class="hljs-string">'passwordless'</span>), errHtml;
-        <span class="hljs-keyword">for</span> (var <span class="hljs-built_in">i</span> = <span class="hljs-transposed_variable">errors.</span><span class="hljs-built_in">length</span> - <span class="hljs-number">1</span>; <span class="hljs-built_in">i</span> &gt;= <span class="hljs-number">0</span>; <span class="hljs-built_in">i</span>--) <span class="hljs-cell">{
+        var errors = req.flash(<span class="hljs-string">'passwordless'</span>), errHtml;
+        <span class="hljs-keyword">for</span> (var <span class="hljs-built_in">i</span> = errors.<span class="hljs-built_in">length</span> - <span class="hljs-number">1</span>; <span class="hljs-built_in">i</span> &gt;= <span class="hljs-number">0</span>; <span class="hljs-built_in">i</span>--) <span class="hljs-cell">{
             errHtml += <span class="hljs-string">'&lt;p&gt;'</span> + errors[i] + <span class="hljs-string">'&lt;/p&gt;'</span>;
         }</span>
-        <span class="hljs-transposed_variable">res.</span>send(<span class="hljs-number">200</span>, errHtml);
+        res.send(<span class="hljs-number">200</span>, errHtml);
 });
 </code></pre>
 <h3 id="success-flashes">Success flashes</h3>
@@ -61,18 +61,18 @@
 <p>Consider the following example:</p>
 <pre><code class="lang-javascript">router.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/logout'</span>, passwordless.logout( 
     {successFlash: <span class="hljs-string">'Hope to see you soon!'</span>} ),
-    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> {</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> </span>{
       res.redirect(<span class="hljs-string">'/home'</span>);
 });
 </code></pre>
 <p>The messages are pushed onto the <code>passwordless-success</code> array of your flash middleware. Check out the <a href="https://github.com/jaredhanson/connect-flash">connect-flash docs</a> how to pull the messages, but a typical scenario should look like this:</p>
-<pre><code class="lang-javascript"><span class="hljs-transposed_variable">router.</span>get(<span class="hljs-string">'/home'</span>,
+<pre><code class="lang-javascript">router.get(<span class="hljs-string">'/home'</span>,
     <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> {</span>
-        var successes = <span class="hljs-transposed_variable">req.</span>flash(<span class="hljs-string">'passwordless-success'</span>), html;
-        <span class="hljs-keyword">for</span> (var <span class="hljs-built_in">i</span> = <span class="hljs-transposed_variable">successes.</span><span class="hljs-built_in">length</span> - <span class="hljs-number">1</span>; <span class="hljs-built_in">i</span> &gt;= <span class="hljs-number">0</span>; <span class="hljs-built_in">i</span>--) <span class="hljs-cell">{
+        var successes = req.flash(<span class="hljs-string">'passwordless-success'</span>), html;
+        <span class="hljs-keyword">for</span> (var <span class="hljs-built_in">i</span> = successes.<span class="hljs-built_in">length</span> - <span class="hljs-number">1</span>; <span class="hljs-built_in">i</span> &gt;= <span class="hljs-number">0</span>; <span class="hljs-built_in">i</span>--) <span class="hljs-cell">{
             html += <span class="hljs-string">'&lt;p&gt;'</span> + successes[i] + <span class="hljs-string">'&lt;/p&gt;'</span>;
         }</span>
-        <span class="hljs-transposed_variable">res.</span>send(<span class="hljs-number">200</span>, html);
+        res.send(<span class="hljs-number">200</span>, html);
 });
 </code></pre>
 <h3 id="2-step-authentication-e-g-for-sms-">2-step authentication (e.g. for SMS)</h3>
@@ -81,7 +81,7 @@
 <p><strong>1: Read out <code>req.passwordless.uidToAuth</code></strong></p>
 <pre><code class="lang-javascript"><span class="hljs-comment">// Display a new form after the user has submitted the phone number</span>
 router.post(<span class="hljs-string">'/sendtoken'</span>, passwordless.requestToken(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(<span class="hljs-rest_arg">...) { },
-    function</span>(req, res)</span> {</span>
+    function</span>(req, res)</span> </span>{
       res.render(<span class="hljs-string">'secondstep'</span>, { uid: req.passwordless.uidToAuth });
 });
 </code></pre>
@@ -101,7 +101,7 @@ router.post(<span class="hljs-string">'/sendtoken'</span>, passwordless.requestT
 </code></pre>
 <p><strong>3: Allow POST to accept tokens</strong></p>
 <pre><code class="lang-javascript">router.post(<span class="hljs-string">'/auth'</span>, passwordless.acceptToken({ allowPost: <span class="hljs-literal">true</span> }),
-    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> {</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> </span>{
         <span class="hljs-comment">// success!</span>
 });
 </code></pre>
@@ -109,16 +109,16 @@ router.post(<span class="hljs-string">'/sendtoken'</span>, passwordless.requestT
 <p>Passwordless supports the redirect of users to the login page, remembering the original URL, and then redirecting them again to the originally requested page as soon as the token has been accepted. Due to the many steps involved, several modifications have to be undertaken:</p>
 <p><strong>1: Set <code>originField</code> and <code>failureRedirect</code> for passwordless.restricted()</strong></p>
 <p>Doing this will call <code>/login</code> with <code>/login?origin=/admin</code> to allow later reuse</p>
-<pre><code class="lang-javascript">router.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/admin'</span>, passwordless.restricted( 
-    { originField: <span class="hljs-string">'origin'</span>, failureRedirect: <span class="hljs-string">'/login'</span> }));
+<pre><code class="lang-javascript"><span class="hljs-tag">router</span><span class="hljs-class">.get</span>(<span class="hljs-string">'/admin'</span>, passwordless.<span class="hljs-function">restricted</span>( 
+    { <span class="hljs-attribute">originField</span>: <span class="hljs-string">'origin'</span>, <span class="hljs-attribute">failureRedirect</span>: <span class="hljs-string">'/login'</span> }));
 </code></pre>
 <p><strong>2: Display <code>origin</code> as hidden field on the login page</strong></p>
 <p>Be sure to pass <code>origin</code> to the page renderer.</p>
 <pre><code class="lang-html">&lt;form action=<span class="hljs-string">"/sendtoken"</span> <span class="hljs-keyword">method</span>=<span class="hljs-string">"POST"</span>&gt;
-    Token:
-    &lt;br&gt;&lt;input name=<span class="hljs-string">"token"</span> <span class="hljs-class"><span class="hljs-keyword">type</span>=</span><span class="hljs-string">"text"</span>&gt;
-    &lt;input <span class="hljs-class"><span class="hljs-keyword">type</span>=</span><span class="hljs-string">"hidden"</span> name=<span class="hljs-string">"origin"</span> <span class="hljs-keyword">value</span>=<span class="hljs-string">""</span>&gt;
-    &lt;br&gt;&lt;input <span class="hljs-class"><span class="hljs-keyword">type</span>=</span><span class="hljs-string">"submit"</span> <span class="hljs-keyword">value</span>=<span class="hljs-string">"Login"</span>&gt;
+    <span class="hljs-type">Token</span>:
+    &lt;br&gt;&lt;input name=<span class="hljs-string">"token"</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">"text"</span>&gt;
+    &lt;input <span class="hljs-keyword">type</span>=<span class="hljs-string">"hidden"</span> name=<span class="hljs-string">"origin"</span> value=<span class="hljs-string">""</span>&gt;
+    &lt;br&gt;&lt;input <span class="hljs-keyword">type</span>=<span class="hljs-string">"submit"</span> value=<span class="hljs-string">"Login"</span>&gt;
 &lt;/form&gt;
 </code></pre>
 <p><strong>3: Let <code>requestToken()</code> accept <code>origin</code></strong></p>
@@ -130,52 +130,52 @@ router.post(<span class="hljs-string">'/sendtoken'</span>, passwordless.requestT
 });
 </code></pre>
 <p><strong>4: Reconfigure <code>acceptToken()</code> middleware</strong></p>
-<pre><code class="lang-javascript"><span class="hljs-tag">app</span><span class="hljs-class">.use</span>(<span class="hljs-tag">passwordless</span><span class="hljs-class">.acceptToken</span>( <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">enableOriginRedirect</span>:<span class="hljs-value"> true </span></span></span>} ));
+<pre><code class="lang-javascript"><span class="hljs-tag">app</span><span class="hljs-class">.use</span>(passwordless.<span class="hljs-function">acceptToken</span>( { <span class="hljs-attribute">enableOriginRedirect</span>: true } ));
 </code></pre>
 <h3 id="several-delivery-strategies">Several delivery strategies</h3>
 <p>In case you want to use several ways to send out tokens you have to add several delivery strategies to Passwordless as shown below:</p>
 <pre><code class="lang-javascript">passwordless.addDelivery(<span class="hljs-string">'email'</span>, 
-    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> {</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> </span>{
         <span class="hljs-comment">// send the token to recipient</span>
 });
 passwordless.addDelivery(<span class="hljs-string">'sms'</span>, 
-    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> {</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> </span>{
         <span class="hljs-comment">// send the token to recipient</span>
 });
 </code></pre>
 <p>To simplify your code, provide the field <code>delivery</code> to your HTML page which submits the recipient details. Afterwards, <code>requestToken()</code> will allow you to distinguish between the different methods:</p>
 <pre><code class="lang-javascript">router.post(<span class="hljs-string">'/sendtoken'</span>, 
     passwordless.requestToken(
-        <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(user, delivery, callback)</span> {</span>
+        <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(user, delivery, callback, req)</span> </span>{
             <span class="hljs-keyword">if</span>(delivery === <span class="hljs-string">'sms'</span>)
                 <span class="hljs-comment">// lookup phone number</span>
             <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(delivery === <span class="hljs-string">'email'</span>)
                 <span class="hljs-comment">// lookup email</span>
         }),
-    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> {</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> </span>{
           res.render(<span class="hljs-string">'sent'</span>);
 });
 </code></pre>
 <h3 id="modify-lifetime-of-a-token">Modify lifetime of a token</h3>
 <p>This is particularly useful if you use shorter tokens than the default to keep security on a high level:</p>
 <pre><code class="lang-javascript"><span class="hljs-comment">// Lifetime in ms for the specific delivery strategy</span>
-passwordless.addDelivery(
-    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> {</span>
+<span class="hljs-tag">passwordless</span><span class="hljs-class">.addDelivery</span>(
+    <span class="hljs-function">function</span>(tokenToSend, uidToSend, recipient, callback) {
         <span class="hljs-comment">// send the token to recipient</span>
-}, { ttl: <span class="hljs-number">1000</span>*<span class="hljs-number">60</span>*<span class="hljs-number">10</span> });
+}, { <span class="hljs-attribute">ttl</span>: <span class="hljs-number">1000</span>*<span class="hljs-number">60</span>*<span class="hljs-number">10</span> });
 </code></pre>
 <h3 id="allow-token-reuse">Allow token reuse</h3>
 <p>By default, all tokens are invalidated after they have been used by the user. Should a user try to use the same token again and is not yet logged in, she will not be authenticated. In some cases (e.g. stateless operation or increased convenience) you might want to allow the reuse of tokens. Please be aware that this might open up your users to the risk of valid tokens being used by third parties without the user being aware of it.</p>
 <p>To enable the reuse of tokens call <code>init()</code> with the option <code>allowTokenReuse: true</code>, as shown here:</p>
-<pre><code class="lang-javascript"><span class="hljs-tag">passwordless</span><span class="hljs-class">.init</span>(<span class="hljs-tag">new</span> <span class="hljs-tag">TokenStore</span>(), 
-    <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">allowTokenReuse</span>:<span class="hljs-value"> true </span></span></span>});
+<pre><code class="lang-javascript"><span class="hljs-tag">passwordless</span><span class="hljs-class">.init</span>(new <span class="hljs-function">TokenStore</span>(), 
+    { <span class="hljs-attribute">allowTokenReuse</span>: true });
 </code></pre>
 <h3 id="different-tokens">Different tokens</h3>
 <p>You can generate your own tokens. This is not recommended except you face delivery constraints such as SMS-based authentication. If you reduce the complexity of your tokens, please consider reducing as well the lifetime of the tokens (see above):</p>
 <pre><code class="lang-javascript">passwordless.addDelivery(
-    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> {</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tokenToSend, uidToSend, recipient, callback)</span> </span>{
         <span class="hljs-comment">// send the token to recipient</span>
-}, {tokenAlgorithm: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span><span class="hljs-keyword">return</span> <span class="hljs-string">'random'</span>}});
+}, {tokenAlgorithm: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{<span class="hljs-keyword">return</span> <span class="hljs-string">'random'</span>}});
 </code></pre>
 <h3 id="stateless-operation">Stateless operation</h3>
 <p>Just remove the <code>app.use(passwordless.sessionSupport());</code> middleware. Every request for a restricted resource has then to be combined with a token and uid. You should consider the following points:</p>
