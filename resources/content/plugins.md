@@ -9,6 +9,7 @@ TokenStores are used to store valid tokens for the time of their validity. A cou
 * [RethinkDBStore](https://github.com/staygrimm/passwordless-rethinkdbstore): Implementation for RethinkDB (Thanks [staygrimm](https://github.com/staygrimm))
 * [PostgreStore](https://github.com/Battochon/passwordless-postgrestore): Implementation for PostgreSQL (Thanks [Bruno Marques](http://marques.io))
 * [MemoryStore](https://github.com/lloydcotten/passwordless-memorystore): Memory-based implementation (Thanks [Lloyd Cotten](https://github.com/lloydcotten))
+* [MySQL](https://github.com/billstron/passwordless-mysql): Implementation for MySQL (Thanks [William Burke](https://twitter.com/billstron))
 
 Aware of any other implementations? [Let us know](https://twitter.com/thesumofall)
 
