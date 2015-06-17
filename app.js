@@ -1,8 +1,8 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('static-favicon');
+var favicon = require('serve-favicon');
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
+//var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongostore')(session);
@@ -31,8 +31,15 @@ app.use(favicon('public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-app.use(expressValidator());
-expressValidator.validator.extend('toLowerCase', function (str) { return str.toLowerCase(); });
+
+app.use(expressValidator({
+ customSanitizers: {
+    toLowerCase: function(str) {
+        return str.toLowerCase();
+    },
+ }
+}));
+
 
 // Google Analytics
 if(config.ga.id && config.ga.domain) {
@@ -42,14 +49,17 @@ if(config.ga.id && config.ga.domain) {
     });
 }
 
-app.use(cookieParser(config.http.cookie_secret));
+//app.use(cookieParser(config.http.cookie_secret));
 app.use(session({   secret: config.http.cookie_secret,
-                    cookie: {maxAge: 60*60*24*365*10},
+                    resave: false,
+                    saveUninitialized: true,
+                    cookie: {maxAge: 60*60*24*365*10, secure: false},
                     store: new MongoStore( { db: config.mongodb.database,
                                             host: config.mongodb.host,
                                             port: config.mongodb.port,
                                             username: config.mongodb.user, 
                                             password: config.mongodb.password })}));
+
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 

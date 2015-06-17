@@ -28,7 +28,7 @@ config.http.cookie_secret = process.env.HTTP_COOKIE_SECRET || 'YeukhPqijei86QWt3
 config.http.trust_proxy = process.env.HTTP_TRUST_PROXY;
 config.http.enforce_ssl = process.env.HTTP_ENFORCE_SSL;
 
-config.mandrill.from = process.env.MANDRILL_FROM || 'AN EMAIL ADDRESS';
+config.mandrill.from = process.env.MANDRILL_FROM || 'YOUR EMAIL';
 config.mandrill.api_key = process.env.MANDRILL_API_KEY || 'API KEY';
 config.mandrill.subject = process.env.MANDRILL_SUBJECT || 'SUBJECT';
 
