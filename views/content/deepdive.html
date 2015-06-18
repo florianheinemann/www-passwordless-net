@@ -20,8 +20,8 @@
 });
 </code></pre>
 <p>After the successful authentication through <code>acceptToken()</code>, you can redirect the user to a specific URL with <code>successRedirect</code>:</p>
-<pre><code class="lang-javascript"><span class="hljs-tag">app</span><span class="hljs-class">.use</span>(passwordless.<span class="hljs-function">acceptToken</span>(
-    { <span class="hljs-attribute">successRedirect</span>: <span class="hljs-string">'/'</span> }));
+<pre><code class="lang-javascript"><span class="hljs-tag">app</span><span class="hljs-class">.use</span>(<span class="hljs-tag">passwordless</span><span class="hljs-class">.acceptToken</span>(
+    <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">successRedirect</span>:<span class="hljs-value"> <span class="hljs-string">'/'</span> }))</span></span>;</span>
 </code></pre>
 <p>While the option <code>successRedirect</code> is not strictly needed, it is strongly recommended to use it to avoid leaking valid tokens via the referrer header of outgoing HTTP links on your site. When provided, the user will be forwarded to the given URL as soon as she has been authenticated. If not provided, Passwordless will simply call the next middleware.</p>
 <h3 id="error-flashes">Error flashes</h3>
@@ -114,23 +114,23 @@ router.post(<span class="hljs-string">'/sendtoken'</span>, passwordless.requestT
 </code></pre>
 <p><strong>2: Display <code>origin</code> as hidden field on the login page</strong></p>
 <p>Be sure to pass <code>origin</code> to the page renderer.</p>
-<pre><code class="lang-html">&lt;form action=<span class="hljs-string">"/sendtoken"</span> <span class="hljs-keyword">method</span>=<span class="hljs-string">"POST"</span>&gt;
-    <span class="hljs-type">Token</span>:
-    &lt;br&gt;&lt;input name=<span class="hljs-string">"token"</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">"text"</span>&gt;
-    &lt;input <span class="hljs-keyword">type</span>=<span class="hljs-string">"hidden"</span> name=<span class="hljs-string">"origin"</span> value=<span class="hljs-string">""</span>&gt;
-    &lt;br&gt;&lt;input <span class="hljs-keyword">type</span>=<span class="hljs-string">"submit"</span> value=<span class="hljs-string">"Login"</span>&gt;
-&lt;/form&gt;
+<pre><code class="lang-html">&lt;<span class="hljs-keyword">form</span> action=<span class="hljs-string">"/sendtoken"</span> method=<span class="hljs-string">"POST"</span>&gt;
+    <span class="hljs-keyword">Token</span>:
+    &lt;<span class="hljs-keyword">br</span>&gt;&lt;<span class="hljs-keyword">input</span> name=<span class="hljs-string">"token"</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">"text"</span>&gt;
+    &lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">"hidden"</span> name=<span class="hljs-string">"origin"</span> value=<span class="hljs-string">""</span>&gt;
+    &lt;<span class="hljs-keyword">br</span>&gt;&lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">"submit"</span> value=<span class="hljs-string">"Login"</span>&gt;
+&lt;/<span class="hljs-keyword">form</span>&gt;
 </code></pre>
 <p><strong>3: Let <code>requestToken()</code> accept <code>origin</code></strong></p>
 <p>This will store the original URL next to the token in the TokenStore.</p>
-<pre><code class="lang-javascript">app.post(<span class="hljs-string">'/sendtoken'</span>, passwordless.requestToken(<span class="hljs-keyword">function</span>(<span class="hljs-keyword">...</span>) { }, 
+<pre><code class="lang-javascript">app.post(<span class="hljs-string">'/sendtoken'</span>, passwordless.requestToken(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(...)</span> </span>{ }, 
     { originField: <span class="hljs-string">'origin'</span> }),
-    <span class="hljs-keyword">function</span>(req, res){
-        // successfully sent
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span></span>{
+        <span class="hljs-comment">// successfully sent</span>
 });
 </code></pre>
 <p><strong>4: Reconfigure <code>acceptToken()</code> middleware</strong></p>
-<pre><code class="lang-javascript"><span class="hljs-tag">app</span><span class="hljs-class">.use</span>(passwordless.<span class="hljs-function">acceptToken</span>( { <span class="hljs-attribute">enableOriginRedirect</span>: true } ));
+<pre><code class="lang-javascript"><span class="hljs-tag">app</span><span class="hljs-class">.use</span>(<span class="hljs-tag">passwordless</span><span class="hljs-class">.acceptToken</span>( <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">enableOriginRedirect</span>:<span class="hljs-value"> true } ))</span></span>;</span>
 </code></pre>
 <h3 id="several-delivery-strategies">Several delivery strategies</h3>
 <p>In case you want to use several ways to send out tokens you have to add several delivery strategies to Passwordless as shown below:</p>
@@ -167,8 +167,8 @@ passwordless.addDelivery(<span class="hljs-string">'sms'</span>,
 <h3 id="allow-token-reuse">Allow token reuse</h3>
 <p>By default, all tokens are invalidated after they have been used by the user. Should a user try to use the same token again and is not yet logged in, she will not be authenticated. In some cases (e.g. stateless operation or increased convenience) you might want to allow the reuse of tokens. Please be aware that this might open up your users to the risk of valid tokens being used by third parties without the user being aware of it.</p>
 <p>To enable the reuse of tokens call <code>init()</code> with the option <code>allowTokenReuse: true</code>, as shown here:</p>
-<pre><code class="lang-javascript"><span class="hljs-tag">passwordless</span><span class="hljs-class">.init</span>(new <span class="hljs-function">TokenStore</span>(), 
-    { <span class="hljs-attribute">allowTokenReuse</span>: true });
+<pre><code class="lang-javascript"><span class="hljs-tag">passwordless</span><span class="hljs-class">.init</span>(<span class="hljs-tag">new</span> <span class="hljs-tag">TokenStore</span>(), 
+    <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">allowTokenReuse</span>:<span class="hljs-value"> true })</span></span>;</span>
 </code></pre>
 <h3 id="different-tokens">Different tokens</h3>
 <p>You can generate your own tokens. This is not recommended except you face delivery constraints such as SMS-based authentication. If you reduce the complexity of your tokens, please consider reducing as well the lifetime of the tokens (see above):</p>
