@@ -65,8 +65,8 @@ module.exports = function(app) {
 	// For every request: provide user data to the view
 	app.use(function(req, res, next) {
 		if(req.user) {
-			User.findById(req.user, function(error, userdoc) {
-				res.locals.user = userdoc;
+			User.findById(req.user, function(error, user) {
+				res.locals.user = user;
 				next();
 			});
 		} else {

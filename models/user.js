@@ -43,11 +43,9 @@ userSchema.statics.createOrUpdateUser = function(email, username, color, newEmai
 		username: username,
 		color: color
 	};
+
 	// Create or update user, return it
-	this.findOneAndUpdate( { email: email } , newUser, { upsert: true, new:true }, function(error, user) {	
-
-		console.log(user);
-
+	this.findOneAndUpdate( { email: email } , newUser, { upsert: true }, function(error, user) {
 		callback(error, user);
 	})
 };
@@ -67,6 +65,6 @@ userSchema.virtual('gravatar').get(function () {
 	}
 });
 
-var User = db.model('User', userSchema);
+var User = db.model('Users', userSchema);
 
 module.exports = User;

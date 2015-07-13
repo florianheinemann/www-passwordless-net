@@ -1,8 +1,8 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
+var favicon = require('static-favicon');
 var logger = require('morgan');
-//var cookieParser = require('cookie-parser');
+var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongostore')(session);
@@ -27,19 +27,12 @@ if(config.http.enforce_ssl) {
     app.use(enforce.HTTPS(config.http.trust_proxy));
 }
 
-favicon(__dirname + '/public/favicon.ico');
+app.use(favicon('public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-
-app.use(expressValidator({
- customSanitizers: {
-    toLowerCase: function(str) {
-        return str.toLowerCase();
-    },
- }
-}));
-
+app.use(expressValidator());
+expressValidator.validator.extend('toLowerCase', function (str) { return str.toLowerCase(); });
 
 // Google Analytics
 if(config.ga.id && config.ga.domain) {
@@ -49,17 +42,14 @@ if(config.ga.id && config.ga.domain) {
     });
 }
 
-//app.use(cookieParser(config.http.cookie_secret));
+app.use(cookieParser(config.http.cookie_secret));
 app.use(session({   secret: config.http.cookie_secret,
-                    resave: false,
-                    saveUninitialized: true,
-                    cookie: {maxAge: 60*60*24*365*10, secure: false},
+                    cookie: {maxAge: 60*60*24*365*10},
                     store: new MongoStore( { db: config.mongodb.database,
                                             host: config.mongodb.host,
                                             port: config.mongodb.port,
                                             username: config.mongodb.user, 
                                             password: config.mongodb.password })}));
-
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 
