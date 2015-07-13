@@ -22,8 +22,8 @@ router.post('/sendtoken',
 	// Input validation
 	function(req, res, next) {
 		req.checkBody('user', 'Please provide a valid email address').isLength(1,200).isEmail();
-		req.sanitize('user').toLowerCase();
-		req.sanitize('user').trim();
+		//req.sanitize('user').toLowerCase();
+		//req.sanitize('user').trim();
 
 		var errors = req.validationErrors(true);
 		if (errors) {

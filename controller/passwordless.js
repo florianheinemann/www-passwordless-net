@@ -5,8 +5,8 @@ var MongoStore = require('passwordless-mongostore');
 var config = require('../config');
 var User = require('../models/user');
 
-var mandrill = require('mandrill-api/mandrill');
-var mandrill_client = new mandrill.Mandrill(config.mandrill.api_key);
+//var mandrill = require('mandrill-api/mandrill');
+//var mandrill_client = new mandrill.Mandrill(config.mandrill.api_key);
 
 var emailText = function(html, token, uid) {
 	var startP = function() { return (html) ? '<p>' : ''; }
@@ -30,6 +30,8 @@ module.exports = function(app) {
 	passwordless.addDelivery(
 		function(tokenToSend, uidToSend, recipient, callback) {
 
+
+
 			var message = {
 			    "html": emailText(true, tokenToSend, uidToSend),
 			    "text": emailText(false, tokenToSend, uidToSend),
@@ -46,15 +48,19 @@ module.exports = function(app) {
 			    },
 			};
 
-			mandrill_client.messages.send({"message": message, "async": false, "ip_pool": null, "send_at": null}, 
-				function(result) {
-    				// success
-    				callback();
-				}, function(e) {
-					var err = 'An email delivery error occurred: ' + e.name + ' - ' + e.message;
-				    console.log(err);
-				    callback(err);
-				});
+			// mandrill_client.messages.send({"message": message, "async": false, "ip_pool": null, "send_at": null}, 
+			// 	function(result) {
+   //  				// success
+   //  				callback();
+			// 	}, function(e) {
+			// 		var err = 'An email delivery error occurred: ' + e.name + ' - ' + e.message;
+			// 	    console.log(err);
+			// 	    callback(err);
+			// 	});
+
+			console.log(config.http.host_url + '/?token=' + encodeURIComponent(tokenToSend) 
+					+ '&uid=' + encodeURIComponent(uidToSend));
+				callback();
 		});
 
 	app.use(passwordless.sessionSupport());

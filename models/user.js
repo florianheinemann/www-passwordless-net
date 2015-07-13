@@ -4,6 +4,7 @@ var db = require('./db').getConnection();
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
+mongoose.set('debug', true);
 
 var userSchema = new Schema({
 	username: 		{ type: String, required: false },
@@ -45,7 +46,7 @@ userSchema.statics.createOrUpdateUser = function(email, username, color, newEmai
 	};
 
 	// Create or update user, return it
-	this.findOneAndUpdate( { email: email } , newUser, { upsert: true }, function(error, user) {
+	this.findOneAndUpdate( { email: email } , newUser, { upsert: true, new: true }, function(error, user) {
 		callback(error, user);
 	})
 };

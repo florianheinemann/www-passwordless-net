@@ -7,6 +7,7 @@ var connection;
 
 module.exports = {
 	getConnection: function() {
+		console.log("connect: " + config.mongodb.uri);
 		if (mongoose.connection.readyState === 0)
 			mongoose.connect(config.mongodb.uri, { server: { auto_reconnect: true } });
 		return mongoose.connection;
