@@ -21,7 +21,8 @@
     "morgan": "~1.0.0",
     "passwordless": "^1.0.3",
     "passwordless-mongostore": "^0.1.0",
-    "static-favicon": "~1.0.0"
+    "static-favicon": "~1.0.0",
+    "assert": "*"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

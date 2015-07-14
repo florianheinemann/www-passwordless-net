@@ -11,7 +11,7 @@ var flash = require('connect-flash');
 var enforce = require('express-sslify');
 
 var config = require('./config');
-var passwordless = require('./controller/passwordless');
+var passwordless = require('./passwordlessc');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
