@@ -13,18 +13,18 @@
 <li>A TokenStore to store the tokens such as <a href="https://github.com/florianheinemann/passwordless-mongostore">MongoStore</a></li>
 <li>Something to deliver the tokens such as <a href="https://github.com/eleith/emailjs">emailjs</a> for email or <a href="https://www.twilio.com/docs/node/install">twilio</a> for text messages / SMS</li>
 </ul>
-<pre><code class="lang-javascript"><span class="hljs-reserved">var</span> passwordless = <span class="hljs-built_in">require</span>(<span class="hljs-string">'passwordless'</span>);
-<span class="hljs-reserved">var</span> MongoStore = <span class="hljs-built_in">require</span>(<span class="hljs-string">'passwordless-mongostore'</span>);
-<span class="hljs-reserved">var</span> email   = <span class="hljs-built_in">require</span>(<span class="hljs-string">"emailjs"</span>);
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> passwordless = <span class="hljs-built_in">require</span>(<span class="hljs-string">'passwordless'</span>);
+<span class="hljs-keyword">var</span> MongoStore = <span class="hljs-built_in">require</span>(<span class="hljs-string">'passwordless-mongostore'</span>);
+<span class="hljs-keyword">var</span> email   = <span class="hljs-built_in">require</span>(<span class="hljs-string">"emailjs"</span>);
 </code></pre>
 <h3 id="3-setup-your-delivery">3. Setup your delivery</h3>
 <p>This is very much depending on what you use to deliver your tokens, but if you use emailjs this could like this:</p>
-<pre><code class="lang-javascript">var smtpServer  = email.server.<span class="hljs-keyword">connect({</span>
-   <span class="hljs-keyword">user</span>:    yourEmail, 
-   <span class="hljs-literal">password</span>: yourPwd, 
-   <span class="hljs-keyword">host</span>:    yourSmtp, 
-   ssl:     <span class="hljs-keyword">true</span>
-<span class="hljs-keyword">}</span>);
+<pre><code class="lang-javascript"><span class="hljs-variable"><span class="hljs-keyword">var</span> smtpServer</span>  = email.server.connect({
+   user:    yourEmail, 
+   password: yourPwd, 
+   host:    yourSmtp, 
+   ssl:     <span class="hljs-literal">true</span>
+});
 </code></pre>
 <h3 id="4-initialize-passwordless">4. Initialize Passwordless</h3>
 <p><code>passwordless.init()</code> will take your TokenStore, which will store the generated tokens.</p>
