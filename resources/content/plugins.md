@@ -11,6 +11,8 @@ TokenStores are used to store valid tokens for the time of their validity. A cou
 * [MemoryStore](https://github.com/lloydcotten/passwordless-memorystore): Memory-based implementation (Thanks [Lloyd Cotten](https://github.com/lloydcotten))
 * [MySQLStore](https://github.com/billstron/passwordless-mysql): Implementation for MySQL (Thanks [William Burke](https://twitter.com/billstron))
 * [NeDBStore](https://github.com/zevero/passwordless-nedbstore): Implementation for NeDB (Thanks [Zevero](https://github.com/zevero))
+* [DynamoStore](https://github.com/jessaustin/passwordless-dynamostore): Implementation for [Amazon Web
+Services'](//aws.amazon.com/) [DynamoDB](//aws.amazon.com/dynamodb/).
 
 Aware of any other implementations? [Let us know](https://twitter.com/thesumofall)
 
