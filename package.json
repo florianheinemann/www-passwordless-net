@@ -16,12 +16,12 @@
     "express-sslify": "^0.1.1",
     "express-validator": "^2.12.1",
     "jade": "^1.11.0",
-    "mandrill-api": "^1.0.45",
     "mongoose": "3.8.*",
     "morgan": "^1.6.0",
     "passwordless": "^1.0.9",
     "passwordless-mongostore": "^0.1.0",
-    "serve-favicon": "^2.3.0"
+    "serve-favicon": "^2.3.0",
+    "sparkpost": "^1.2.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

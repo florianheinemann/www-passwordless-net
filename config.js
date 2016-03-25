@@ -3,7 +3,8 @@
 var config = {};
 config.mongodb = {};
 config.http = {};
-config.mandrill = {};
+config.sparkpost = {};
+config.email = {};
 config.ga = {};
 
 config.mongodb.host = process.env.MONGODB_HOST || '127.0.0.1';
@@ -28,9 +29,10 @@ config.http.cookie_secret = process.env.HTTP_COOKIE_SECRET || 'YeukhPqijei86QWt3
 config.http.trust_proxy = process.env.HTTP_TRUST_PROXY;
 config.http.enforce_ssl = process.env.HTTP_ENFORCE_SSL;
 
-config.mandrill.from = process.env.MANDRILL_FROM || 'YOUR EMAIL';
-config.mandrill.api_key = process.env.MANDRILL_API_KEY || 'API KEY';
-config.mandrill.subject = process.env.MANDRILL_SUBJECT || 'SUBJECT';
+config.email.from = process.env.EMAIL_FROM || 'YOUR EMAIL';
+config.email.subject = process.env.EMAIL_SUBJECT || 'SUBJECT';
+
+config.sparkpost.api_key = process.env.SPARKPOST_API_KEY || 'API KEY';
 
 config.ga.id = process.env.GA_ID || '';
 config.ga.domain = process.env.GA_DOMAIN || '';

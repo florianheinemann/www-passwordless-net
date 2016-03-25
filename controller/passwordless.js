@@ -5,8 +5,8 @@ var MongoStore = require('passwordless-mongostore');
 var config = require('../config');
 var User = require('../models/user');
 
-var mandrill = require('mandrill-api/mandrill');
-var mandrill_client = new mandrill.Mandrill(config.mandrill.api_key);
+var SparkPost = require('sparkpost');
+var sparkpost_client = new SparkPost(config.sparkpost.api_key);
 
 var emailText = function(html, token, uid) {
 	var startP = function() { return (html) ? '<p>' : ''; }
@@ -29,32 +29,31 @@ module.exports = function(app) {
 
 	passwordless.addDelivery(
 		function(tokenToSend, uidToSend, recipient, callback) {
+			console.log('called');
 
-			var message = {
-			    "html": emailText(true, tokenToSend, uidToSend),
-			    "text": emailText(false, tokenToSend, uidToSend),
-			    "subject": config.mandrill.subject,
-			    "from_email": config.mandrill.from,
-			    "from_name": "Passwordless",
-			    "to": [{
-			            "email": recipient,
-			            "name": "",
-			            "type": "to"
-			        }],
-			    "headers": {
-			        "Reply-To": config.mandrill.from
-			    },
-			};
-
-			mandrill_client.messages.send({"message": message, "async": false, "ip_pool": null, "send_at": null}, 
-				function(result) {
-    				// success
-    				callback();
-				}, function(e) {
-					var err = 'An email delivery error occurred: ' + e.name + ' - ' + e.message;
-				    console.log(err);
-				    callback(err);
-				});
+			sparkpost_client.transmissions.send({
+					transmissionBody: {
+						content: 
+						{
+							from: config.email.from,
+							subject: config.email.subject,
+							html: emailText(true, tokenToSend, uidToSend),
+							text: emailText(false, tokenToSend, uidToSend)
+						},
+						recipients: [{address: recipient}]
+					}
+				}, function(e, res) {
+					if (e) {
+									console.log('err');
+						var err = 'An email delivery error occurred: ' + e;
+					    console.log(err);
+					    callback(err);
+					} 
+					else 
+					{			console.log('suc');
+						callback();
+					}
+			});
 		});
 
 	app.use(passwordless.sessionSupport());
