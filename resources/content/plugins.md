@@ -18,6 +18,9 @@ Aware of any other implementations? [Let us know](https://twitter.com/thesumofal
 
 In case you need something different, simply fork one of the exiting TokenStores or start from scratch and implement against [passwordless-tokenstore-test](https://github.com/florianheinemann/passwordless-tokenstore-test), a test framework that makes sure you fulfill all the criteria of the API. It might also be worth having a look at the [comments](https://github.com/florianheinemann/passwordless-tokenstore/blob/master/lib/tokenstore.js) of the API.
 
+### Adapters
+* [passwordless-hapi](https://github.com/sb8244/passwordless-hapi): A thin adapter to use Passwordless with [Hapi](http://hapijs.com/)
+
 ### Delivery strategies
 You are free to deliver the tokens in any way that suits your needs. The following modules might be a good starting point:
 * [emailjs](http://emailjs.org): Straight-forward node.js email client (requires a SMTP server such as your Gmail account)
