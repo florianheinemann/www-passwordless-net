@@ -11,7 +11,7 @@ Type in an email address, click on the provided link, and the users are ready to
 
 In addition, rather than splitting your attention on both the login page and the lost password page (which is often much less hardened), you can focus your security-minded energy on just one path.
 
-The tokens (or "one-time passwords") are very [hard to guess](http://en.wikipedia.org/wiki/Universally_unique_identifier), are only valid for a limited time and can be reset at any time without having to ask your uses to create a new password (remember those emails you got from big companies asking you to think of a new password due to a hack?).
+The tokens (or "one-time passwords") are very [hard to guess](http://en.wikipedia.org/wiki/Universally_unique_identifier), are only valid for a limited time, and can be reset at any time without having to ask your users to create a new password (remember those emails you got from big companies asking you to think of a new password due to a hack?).
 
 ## Flexible
 Deliver your tokens via email, text messages (SMS), or smoke signs. You can embed [Sendgrid](http://sendgrid.com/), [emailjs](https://github.com/eleith/emailjs), [Twilio](https://www.twilio.com/), or any other framework you like to get the token to your user.
