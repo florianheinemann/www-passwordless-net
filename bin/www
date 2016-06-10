@@ -5,6 +5,6 @@ var config = require('../config');
 
 app.set('port', config.http.port);
 
-var server = app.listen(app.get('port'), function() {
+var server = app.listen(app.get('port'), '127.0.0.1', function() {
   debug('Express server listening on port ' + server.address().port);
 });
