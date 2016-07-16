@@ -14,6 +14,7 @@ TokenStores are used to store valid tokens for the time of their validity. A cou
 * [DynamoStore](https://github.com/jessaustin/passwordless-dynamostore): Implementation for [Amazon Web
 Services'](//aws.amazon.com/) [DynamoDB](//aws.amazon.com/dynamodb/)
 * [node-cache](https://github.com/andreafalzetti/passwordless-nodecache): In-memory solution based on [node-cache](https://github.com/tcs-de/nodecache) (Thanks [Andrea Falzetti](http://falzetti.me))
+* [node-cache-manager](https://github.com/theogravity/passwordless-cache-manager): Implementation for [node-cache-manager](https://github.com/BryanDonovan/node-cache-manager), supporting multiple storage types (Thanks [Theo Gravity](https://github.com/theogravity))
 
 Aware of any other implementations? [Let us know](https://twitter.com/thesumofall)
 
