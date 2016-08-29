@@ -34,7 +34,7 @@ passwordless.init(<span class="hljs-keyword">new</span> <span class="hljs-type">
 </code></pre>
 <h3 id="5-tell-passwordless-how-to-deliver-a-token">5. Tell Passwordless how to deliver a token</h3>
 <p><code>passwordless.addDelivery(deliver)</code> adds a new delivery mechanism. <code>deliver</code> is called whenever a token has to be sent. By default, the mechanism you choose should provide the user with a link in the following format:</p>
-<p><code>http://www.example.com/token={TOKEN}&amp;uid={UID}</code></p>
+<p><code>http://www.example.com/?token={TOKEN}&amp;uid={UID}</code></p>
 <p>That&#39;s how you could do this with emailjs:</p>
 <pre><code class="lang-javascript"><span class="hljs-comment">// Set up a delivery service</span>
 passwordless.addDelivery(
