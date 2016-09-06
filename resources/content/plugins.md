@@ -15,7 +15,7 @@ TokenStores are used to store valid tokens for the time of their validity. A cou
 Services'](//aws.amazon.com/) [DynamoDB](//aws.amazon.com/dynamodb/)
 * [node-cache](https://github.com/andreafalzetti/passwordless-nodecache): In-memory solution based on [node-cache](https://github.com/tcs-de/nodecache) (Thanks [Andrea Falzetti](http://falzetti.me))
 * [node-cache-manager](https://github.com/theogravity/passwordless-cache-manager): Implementation for [node-cache-manager](https://github.com/BryanDonovan/node-cache-manager), supporting multiple storage types (Thanks [Theo Gravity](https://github.com/theogravity))
-* [AuthJetStore](https://github.com/authjet/passwordless-authjetstore) FREE cloud-hosted solution from the makers of [AuthJet](https://authjet.com) (Thanks [@ecwyne](https://github.com/ecwyne))
+* [AuthJetStore](https://github.com/authjet/passwordless-authjetstore) Free cloud-hosted solution from the makers of [AuthJet](https://authjet.com) (Thanks [@ecwyne](https://github.com/ecwyne))
 
 Aware of any other implementations? [Let us know](https://twitter.com/thesumofall)
 
@@ -24,15 +24,15 @@ In case you need something different, simply fork one of the exiting TokenStores
 ### Adapters
 * [passwordless-hapi](https://github.com/sb8244/passwordless-hapi): A thin adapter to use Passwordless with [Hapi](http://hapijs.com/) (Thanks [@sb8244](https://github.com/sb8244))
 
-### DIY Delivery strategies
+### Delivery strategies
 You are free to deliver the tokens in any way that suits your needs. The following modules might be a good starting point:
 * [emailjs](http://emailjs.org): Straight-forward node.js email client (requires a SMTP server such as your Gmail account)
 * [Mandrill](https://www.mandrill.com): Scalable SMTP infrastructure. They do have a node.js module. In fact, [this website](https://github.com/florianheinemann/www-passwordless-net/blob/master/controller/passwordless.js) uses their services. Free for up to 12k emails per month
 * [Sendgrid](https://sendgrid.com/): Similar to Mandrill. Mature node.js module with good documentation
 * [Twilio](http://www.twilio.com): Provides APIs for text messages and voice calls. Have a look at the [2-step authentication](/deepdive#2-step-authentication-e-g-for-sms-) to get an idea how to implement it
 
-### Packaged Delivery Strategies
-The following are pre-packaged delivery strategies. Just plug and play!
-* [passwordless-sms](https://github.com/authjet/passwordless-sms): Easily deliver tokens via SMS using [AuthJet](https://authjet.com)
+### Pre-packaged delivery strategies
+The following providers offer pre-packages libraries to use their APIs with Passwordless:
+* [passwordless-sms](https://github.com/authjet/passwordless-sms): Deliver tokens via SMS using [AuthJet](https://authjet.com)
 
 [Let us know](https://twitter.com/thesumofall) if you come across any other great ways to send out tokens!
