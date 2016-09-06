@@ -32,6 +32,7 @@ You are free to deliver the tokens in any way that suits your needs. The followi
 * [Twilio](http://www.twilio.com): Provides APIs for text messages and voice calls. Have a look at the [2-step authentication](/deepdive#2-step-authentication-e-g-for-sms-) to get an idea how to implement it
 
 ### Packaged Delivery Strategies
+The following are pre-packaged delivery strategies. Just plug and play!
 * [passwordless-sms](https://github.com/authjet/passwordless-sms): Easily deliver tokens via SMS using [AuthJet](https://authjet.com)
 
 [Let us know](https://twitter.com/thesumofall) if you come across any other great ways to send out tokens!
