@@ -24,15 +24,17 @@ In case you need something different, simply fork one of the exiting TokenStores
 ### Adapters
 * [passwordless-hapi](https://github.com/sb8244/passwordless-hapi): A thin adapter to use Passwordless with [Hapi](http://hapijs.com/) (Thanks [@sb8244](https://github.com/sb8244))
 
-### Delivery strategies
+### Delivery services
 You are free to deliver the tokens in any way that suits your needs. The following modules might be a good starting point:
 * [emailjs](http://emailjs.org): Straight-forward node.js email client (requires a SMTP server such as your Gmail account)
 * [Mandrill](https://www.mandrill.com): Scalable SMTP infrastructure. They do have a node.js module. In fact, [this website](https://github.com/florianheinemann/www-passwordless-net/blob/master/controller/passwordless.js) uses their services. Free for up to 12k emails per month
 * [Sendgrid](https://sendgrid.com/): Similar to Mandrill. Mature node.js module with good documentation
 * [Twilio](http://www.twilio.com): Provides APIs for text messages and voice calls. Have a look at the [2-step authentication](/deepdive#2-step-authentication-e-g-for-sms-) to get an idea how to implement it
 
-### Pre-packaged delivery strategies
-The following providers offer pre-packages libraries to use their APIs with Passwordless:
+### Wrapper around delivery services
+The following modules ease the use of external delivery services by offering a thin wrapper customized for Passwordless:
+* [passwordless-mailgun-delivery](https://www.npmjs.com/package/passwordless-mailgun-delivery): A thin wrapper to directly use [Mailgun](https://www.mailgun.com/) with Passwordless (Thanks [Alex Jurgensen](https://www.campbowen.ca/donate/))
+* [passwordless-plivo-delivery](https://www.npmjs.com/package/passwordless-plivo-delivery): A thin wrapper to directly use [Plivio](https://www.plivo.com/) with Passwordless (Thanks [Alex Jurgensen](https://www.campbowen.ca/donate/))
 * [passwordless-sms](https://github.com/authjet/passwordless-sms): Deliver tokens via SMS using [AuthJet](https://authjet.com)
 
 [Let us know](https://twitter.com/thesumofall) if you come across any other great ways to send out tokens!

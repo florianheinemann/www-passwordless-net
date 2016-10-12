@@ -24,7 +24,7 @@ Services&#39;</a> <a href="//aws.amazon.com/dynamodb/">DynamoDB</a></li>
 <ul>
 <li><a href="https://github.com/sb8244/passwordless-hapi">passwordless-hapi</a>: A thin adapter to use Passwordless with <a href="http://hapijs.com/">Hapi</a> (Thanks <a href="https://github.com/sb8244">@sb8244</a>)</li>
 </ul>
-<h3 id="delivery-strategies">Delivery strategies</h3>
+<h3 id="delivery-services">Delivery services</h3>
 <p>You are free to deliver the tokens in any way that suits your needs. The following modules might be a good starting point:</p>
 <ul>
 <li><a href="http://emailjs.org">emailjs</a>: Straight-forward node.js email client (requires a SMTP server such as your Gmail account)</li>
@@ -32,9 +32,11 @@ Services&#39;</a> <a href="//aws.amazon.com/dynamodb/">DynamoDB</a></li>
 <li><a href="https://sendgrid.com/">Sendgrid</a>: Similar to Mandrill. Mature node.js module with good documentation</li>
 <li><a href="http://www.twilio.com">Twilio</a>: Provides APIs for text messages and voice calls. Have a look at the <a href="/deepdive#2-step-authentication-e-g-for-sms-">2-step authentication</a> to get an idea how to implement it</li>
 </ul>
-<h3 id="pre-packaged-delivery-strategies">Pre-packaged delivery strategies</h3>
-<p>The following providers offer pre-packages libraries to use their APIs with Passwordless:</p>
+<h3 id="wrapper-around-delivery-services">Wrapper around delivery services</h3>
+<p>The following modules ease the use of external delivery services by offering a thin wrapper customized for Passwordless:</p>
 <ul>
+<li><a href="https://www.npmjs.com/package/passwordless-mailgun-delivery">passwordless-mailgun-delivery</a>: A thin wrapper to directly use <a href="https://www.mailgun.com/">Mailgun</a> with Passwordless (Thanks <a href="https://www.campbowen.ca/donate/">Alex Jurgensen</a>)</li>
+<li><a href="https://www.npmjs.com/package/passwordless-plivo-delivery">passwordless-plivo-delivery</a>: A thin wrapper to directly use <a href="https://www.plivo.com/">Plivio</a> with Passwordless (Thanks <a href="https://www.campbowen.ca/donate/">Alex Jurgensen</a>)</li>
 <li><a href="https://github.com/authjet/passwordless-sms">passwordless-sms</a>: Deliver tokens via SMS using <a href="https://authjet.com">AuthJet</a></li>
 </ul>
 <p><a href="https://twitter.com/thesumofall">Let us know</a> if you come across any other great ways to send out tokens!</p>
